@@ -15,6 +15,11 @@ class ServiceController extends Controller
         return view('services.residential', compact('featured', 'pests'));
     }
 
+    public function pest(Pest $pest)
+    {
+        return view('services.pest', compact('pest'));
+    }
+
     public function commercial()
     {
         $industries = Industry::orderBy('name')->get();

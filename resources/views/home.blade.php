@@ -59,7 +59,7 @@
 
         <div class="reveal-stagger flex flex-wrap border-t-2 border-l-2 border-primary">
             @if ($featured)
-                <a href="{{ route('services.residential') }}" class="pest-cell w-1/2 sm:w-1/3 md:w-1/6 border-r-2 border-b-2 border-primary p-5 bg-white flex flex-col items-center text-center gap-2 hover:bg-bgAlt overflow-hidden">
+                <a href="{{ route('services.pest', $featured) }}" class="pest-cell w-1/2 sm:w-1/3 md:w-1/6 border-r-2 border-b-2 border-primary p-5 bg-white flex flex-col items-center text-center gap-2 hover:bg-bgAlt overflow-hidden">
                     <div class="w-16 h-16 flex items-center justify-center overflow-hidden">
                         @if ($featured->photo_path)
                             <img src="{{ asset($featured->photo_path) }}" alt="{{ $featured->name }}" class="w-16 h-16 object-cover">
@@ -69,7 +69,7 @@
                 </a>
             @endif
             @foreach ($pests as $pest)
-                <a href="{{ route('services.residential') }}" class="pest-cell w-1/2 sm:w-1/3 md:w-1/6 border-r-2 border-b-2 border-primary p-5 bg-white flex flex-col items-center text-center gap-2 hover:bg-bgAlt overflow-hidden">
+                <a href="{{ route('services.pest', $pest) }}" class="pest-cell w-1/2 sm:w-1/3 md:w-1/6 border-r-2 border-b-2 border-primary p-5 bg-white flex flex-col items-center text-center gap-2 hover:bg-bgAlt overflow-hidden">
                     <div class="w-16 h-16 flex items-center justify-center overflow-hidden">
                         @if ($pest->photo_path)
                             <img src="{{ asset($pest->photo_path) }}" alt="{{ $pest->name }}" class="w-16 h-16 object-cover">

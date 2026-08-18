@@ -11,6 +11,7 @@ use App\Http\Controllers\PortalController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/services/residential', [ServiceController::class, 'residential'])->name('services.residential');
+Route::get('/services/residential/{pest}', [ServiceController::class, 'pest'])->name('services.pest');
 Route::get('/services/commercial', [ServiceController::class, 'commercial'])->name('services.commercial');
 
 Route::get('/plans', [PlanController::class, 'index'])->name('plans.index');
