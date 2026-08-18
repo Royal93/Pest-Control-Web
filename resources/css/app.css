@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #147CB9;
+  --secondary: #354F8E;
+  --signal: #C1272D;
+  --ink: #1D2A4D;
+  --ink-muted: #5A6B85;
+  --line: #147CB9;
+}
+
+.perimeter-frame {
+  border: 2px solid var(--primary);
+}
