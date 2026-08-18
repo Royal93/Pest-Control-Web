@@ -29,12 +29,14 @@
         </div>
     @endif
 
-    <div class="grid sm:grid-cols-2 md:grid-cols-4 border-2 border-primary divide-x-2 divide-y-2 divide-primary">
+    <div class="flex flex-wrap border-t-2 border-l-2 border-primary">
         @foreach ($pests as $pest)
-            <div class="p-6 bg-white flex flex-col gap-3">
-                @if ($pest->photo_path)
-                    <img src="{{ asset($pest->photo_path) }}" alt="{{ $pest->name }}" class="w-full h-28 object-cover">
-                @endif
+            <div class="w-1/2 sm:w-1/2 md:w-1/4 border-r-2 border-b-2 border-primary p-6 bg-white flex flex-col gap-3">
+                <div class="w-full h-28 flex items-center justify-center bg-bgAlt">
+                    @if ($pest->photo_path)
+                        <img src="{{ asset($pest->photo_path) }}" alt="{{ $pest->name }}" class="w-full h-28 object-cover">
+                    @endif
+                </div>
                 <h3 class="font-display uppercase text-sm">{{ $pest->name }}</h3>
                 <p class="text-inkMuted text-sm">{{ $pest->description }}</p>
             </div>

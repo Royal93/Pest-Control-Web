@@ -5,7 +5,7 @@
 @section('content')
 
 {{-- ============ TRUST BAR ============ --}}
-<div class="bg-ink text-white">
+<div class="bg-secondary text-white">
     <div class="max-w-6xl mx-auto px-7 py-3 flex flex-wrap justify-center gap-x-10 gap-y-1 text-xs font-mono uppercase tracking-widest">
         <span>Free Inspections &amp; Estimates</span>
         <span>Scheduled Visits, Not Guesswork</span>
@@ -15,11 +15,6 @@
 
 {{-- ============ HERO (video-ready) ============ --}}
 <header class="relative border-b-2 border-primary overflow-hidden">
-    {{--
-        Drop your hero video at public/videos/hero.mp4 and it will autoplay behind
-        this text automatically. Until then, this falls back to the bgAlt background
-        color below — nothing breaks if the file doesn't exist yet.
-    --}}
     <div class="absolute inset-0 -z-10 bg-bgAlt">
         <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-90"
                poster="{{ asset('images/hero-poster.jpg') }}">
@@ -31,7 +26,7 @@
     <div class="max-w-3xl mx-auto px-7 pt-20 pb-24 text-center md:text-left">
         <p class="font-mono text-xs tracking-widest uppercase text-primary mb-4">Residential &amp; Commercial Pest Control</p>
         <h1 class="font-display uppercase text-4xl md:text-5xl leading-tight mb-6">
-            The perimeter is where the problem <span class="text-signal">ends.</span>
+            The perimeter is where the problem <span class="text-accent">ends.</span>
         </h1>
         <p class="text-inkMuted text-lg mb-8 max-w-xl">
             We don't spray and pray. SP Pest Control identifies where pests enter, treats the source,
@@ -52,7 +47,7 @@
 </header>
 
 {{-- ============ PEST TEASER ============ --}}
-<section class="py-20 border-b-2 border-line">
+<section class="reveal py-20 border-b-2 border-line">
     <div class="max-w-6xl mx-auto px-7">
         <div class="flex flex-wrap justify-between items-end gap-4 mb-10">
             <div>
@@ -62,17 +57,24 @@
             <a href="{{ route('services.residential') }}" class="text-primary text-sm font-semibold uppercase whitespace-nowrap">See all pests &rarr;</a>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 border-2 border-primary divide-x-2 divide-y-2 divide-primary">
+        <div class="reveal-stagger flex flex-wrap border-t-2 border-l-2 border-primary">
             @if ($featured)
-                <a href="{{ route('services.residential') }}" class="p-5 bg-white flex flex-col items-center text-center gap-2 hover:bg-bgAlt">
+                <a href="{{ route('services.residential') }}" class="pest-cell w-1/2 sm:w-1/3 md:w-1/6 border-r-2 border-b-2 border-primary p-5 bg-white flex flex-col items-center text-center gap-2 hover:bg-bgAlt overflow-hidden">
+                    <div class="w-16 h-16 flex items-center justify-center overflow-hidden">
+                        @if ($featured->photo_path)
+                            <img src="{{ asset($featured->photo_path) }}" alt="{{ $featured->name }}" class="w-16 h-16 object-cover">
+                        @endif
+                    </div>
                     <span class="font-display uppercase text-xs">{{ $featured->name }}</span>
                 </a>
             @endif
             @foreach ($pests as $pest)
-                <a href="{{ route('services.residential') }}" class="p-5 bg-white flex flex-col items-center text-center gap-2 hover:bg-bgAlt">
-                    @if ($pest->photo_path)
-                        <img src="{{ asset($pest->photo_path) }}" alt="{{ $pest->name }}" class="w-16 h-16 object-cover">
-                    @endif
+                <a href="{{ route('services.residential') }}" class="pest-cell w-1/2 sm:w-1/3 md:w-1/6 border-r-2 border-b-2 border-primary p-5 bg-white flex flex-col items-center text-center gap-2 hover:bg-bgAlt overflow-hidden">
+                    <div class="w-16 h-16 flex items-center justify-center overflow-hidden">
+                        @if ($pest->photo_path)
+                            <img src="{{ asset($pest->photo_path) }}" alt="{{ $pest->name }}" class="w-16 h-16 object-cover">
+                        @endif
+                    </div>
                     <span class="font-display uppercase text-xs">{{ $pest->name }}</span>
                 </a>
             @endforeach
@@ -81,7 +83,7 @@
 </section>
 
 {{-- ============ EXPERTISE / TRUST ============ --}}
-<section class="py-20 border-b-2 border-line bg-bgAlt">
+<section class="reveal py-20 border-b-2 border-line bg-bgAlt">
     <div class="max-w-6xl mx-auto px-7 grid md:grid-cols-2 gap-12 items-center">
         <div>
             <p class="font-mono text-xs tracking-widest uppercase text-primary mb-3">Why SP Pest Control</p>
@@ -101,9 +103,9 @@
 </section>
 
 {{-- ============ GUARANTEE (from real plan terms) ============ --}}
-<section class="py-20 border-b-2 border-line">
+<section class="reveal py-20 border-b-2 border-line">
     <div class="max-w-4xl mx-auto px-7 text-center">
-        <p class="font-mono text-xs tracking-widest uppercase text-primary mb-3">Our Guarantee</p>
+        <p class="font-mono text-xs tracking-widest uppercase text-accent mb-3">Our Guarantee</p>
         <h2 class="font-display uppercase text-2xl md:text-3xl mb-6">We stand behind every scheduled plan</h2>
         <p class="text-inkMuted max-w-2xl mx-auto mb-8">
             Every protection plan includes a guarantee built into its terms — not a marketing add-on.
@@ -116,13 +118,13 @@
 </section>
 
 {{-- ============ PROTECTION PLANS ============ --}}
-<section class="py-20 border-b-2 border-line bg-bgAlt">
+<section class="reveal py-20 border-b-2 border-line bg-bgAlt">
     <div class="max-w-6xl mx-auto px-7">
         <p class="font-mono text-xs tracking-widest uppercase text-primary mb-3">Home Protection Plans</p>
         <h2 class="font-display uppercase text-2xl md:text-3xl mb-10">Subscriptions, not surprise invoices</h2>
-        <div class="grid md:grid-cols-3 gap-6">
+        <div class="reveal-stagger grid md:grid-cols-3 gap-6">
             @foreach ($plans as $plan)
-                <div class="border-2 {{ ($plan->meta['featured'] ?? false) ? 'border-signal' : 'border-primary' }} bg-white p-6 flex flex-col">
+                <div class="plan-card border-2 {{ ($plan->meta['featured'] ?? false) ? 'border-accent' : 'border-primary' }} bg-white p-6 flex flex-col">
                     <h3 class="font-display uppercase text-lg mb-2">{{ $plan->name }}</h3>
                     <p class="font-mono text-2xl mb-3">R{{ number_format($plan->price, 0) }}<span class="text-sm text-inkFaint">/mo</span></p>
                     <p class="text-inkMuted text-sm mb-5 flex-1">{{ $plan->description }}</p>
@@ -135,7 +137,7 @@
 
 {{-- ============ COMMERCIAL TEASER ============ --}}
 @if ($industries->count())
-<section class="py-20 border-b-2 border-line">
+<section class="reveal py-20 border-b-2 border-line">
     <div class="max-w-6xl mx-auto px-7 grid md:grid-cols-2 gap-12 items-center">
         <div>
             <p class="font-mono text-xs tracking-widest uppercase text-primary mb-3">Commercial</p>
@@ -159,15 +161,10 @@
 @endif
 
 {{-- ============ VIDEO SECTION (drop-in ready) ============ --}}
-<section class="py-20 border-b-2 border-line bg-bgAlt">
+<section class="reveal py-20 border-b-2 border-line bg-bgAlt">
     <div class="max-w-4xl mx-auto px-7 text-center">
         <p class="font-mono text-xs tracking-widest uppercase text-primary mb-3">See It In Action</p>
         <h2 class="font-display uppercase text-2xl md:text-3xl mb-8">How a scheduled visit works</h2>
-
-        {{--
-            Once you have a walkthrough video, drop it at public/videos/how-it-works.mp4
-            and this section plays it directly — no code changes needed.
-        --}}
         <div class="border-2 border-primary bg-white aspect-video flex items-center justify-center max-w-2xl mx-auto">
             <video controls class="w-full h-full object-cover" poster="{{ asset('images/video-poster.jpg') }}">
                 <source src="{{ asset('videos/how-it-works.mp4') }}" type="video/mp4">
@@ -178,7 +175,7 @@
 </section>
 
 {{-- ============ FINAL CTA ============ --}}
-<section class="py-16 bg-ink text-white text-center">
+<section class="reveal py-16 bg-secondary text-white text-center">
     <div class="max-w-2xl mx-auto px-7">
         <h2 class="font-display uppercase text-2xl md:text-3xl mb-4">Ready to get started?</h2>
         <p class="text-white/70 mb-8">Request a free inspection, or ask us anything about pricing and scheduling.</p>

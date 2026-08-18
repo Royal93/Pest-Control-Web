@@ -14,7 +14,7 @@ class PestSeeder extends Seeder
             [
                 'name' => 'Cockroaches',
                 'description' => 'Cockroaches carry disease-causing organisms such as salmonella, and an infestation left untreated spreads fast. Our technicians use a specially designed gel formulation rather than blanket spraying — sprays and fumigation tend to scatter roaches deeper into wall cavities and into neighbouring units, making the problem harder to solve, not easier.',
-                'photo_path' => null, // no source photo yet — add one to public/images/pests and set this
+                'photo_path' => 'images/pests/cockroaches.jpg',
                 'featured' => true,
             ],
             [

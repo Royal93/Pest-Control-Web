@@ -3,14 +3,78 @@
 @tailwind utilities;
 
 :root {
-  --primary: #147CB9;
-  --secondary: #354F8E;
-  --signal: #C1272D;
-  --ink: #1D2A4D;
-  --ink-muted: #5A6B85;
-  --line: #147CB9;
+  --primary: #D1723C;
+  --secondary: #2C343A;
+  --accent: #7BAE3C;
+  --ink: #333333;
+  --line: #D1723C;
 }
 
-.perimeter-frame {
-  border: 2px solid var(--primary);
+/* ============ GLOBAL MOTION — makes the site feel alive, not rigid ============ */
+
+/* Smooth, consistent transitions on every interactive element */
+a, button, input, select, textarea {
+  transition: all 0.25s ease;
+}
+
+/* Buttons and links lift slightly on hover instead of just changing color */
+a:hover, button:hover {
+  transform: translateY(-2px);
+}
+a:active, button:active {
+  transform: translateY(0);
+}
+
+/* Bordered cards (pest cards, plan cards, industry rows, etc.) get a soft lift + shadow on hover */
+.border-2:hover {
+  box-shadow: 0 12px 28px rgba(44, 52, 58, 0.12);
+}
+
+/* Photo zoom-in-on-hover, for any pest/plan photo inside a card */
+.pest-cell img,
+.plan-card img {
+  transition: transform 0.4s ease;
+}
+.pest-cell:hover img {
+  transform: scale(1.12);
+}
+
+/* ============ SCROLL-REVEAL SYSTEM ============ */
+/* Add class="reveal" to any section wrapper. It fades + slides up the first time
+   it scrolls into view. Powered by the small script in resources/js/app.js — no
+   per-page JS needed, it auto-applies to every .reveal element on the page. */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children of a revealed grid slightly, for a nicer cascade effect */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reveal-stagger.is-visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0.02s; }
+.reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.08s; }
+.reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.14s; }
+.reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.2s; }
+.reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 0.26s; }
+.reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 0.32s; }
+.reveal-stagger.is-visible > *:nth-child(7) { transition-delay: 0.38s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-stagger > *, a, button {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
