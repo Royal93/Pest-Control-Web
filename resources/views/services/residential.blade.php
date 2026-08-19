@@ -15,8 +15,8 @@
         <a href="{{ route('services.pest', $featured) }}" class="block border-2 border-primary mb-10 grid md:grid-cols-2 hover:bg-bgAlt">
             <div class="bg-bgAlt p-10 flex items-center justify-center">
                 @if ($featured->photo_path)
-                    <div class="w-44 h-44 rounded-full border-2 border-primary bg-white overflow-hidden flex items-center justify-center">
-                        <img src="{{ asset($featured->photo_path) }}" alt="{{ $featured->name }}" class="w-full h-full object-cover">
+                    <div class="pest-photo-circle w-44 h-44">
+                        <img src="{{ asset($featured->photo_path) }}" alt="{{ $featured->name }}">
                     </div>
                 @endif
             </div>
@@ -31,12 +31,12 @@
         </a>
     @endif
 
-    <div class="flex flex-wrap justify-center border-t-2 border-l-2 border-primary">
+    <div class="pest-grid-frame flex flex-wrap justify-center border-2 border-primary">
         @foreach ($pests as $pest)
             <a href="{{ route('services.pest', $pest) }}" class="pest-cell w-1/2 sm:w-1/2 md:w-1/4 border-r-2 border-b-2 border-primary p-6 bg-white flex flex-col gap-3 hover:bg-bgAlt">
-                <div class="w-28 h-28 mx-auto rounded-full border-2 border-primary bg-white overflow-hidden flex items-center justify-center">
+                <div class="pest-photo-circle w-28 h-28 mx-auto">
                     @if ($pest->photo_path)
-                        <img src="{{ asset($pest->photo_path) }}" alt="{{ $pest->name }}" class="w-full h-full object-cover">
+                        <img src="{{ asset($pest->photo_path) }}" alt="{{ $pest->name }}">
                     @endif
                 </div>
                 <h3 class="font-display uppercase text-sm">{{ $pest->name }}</h3>

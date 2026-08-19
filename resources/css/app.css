@@ -93,3 +93,51 @@ a:active, button:active { transform: translateY(0); }
 .hero-curve svg { display: block; width: 100%; height: 60px; }
 
 .topbar-compact { box-shadow: 0 4px 16px rgba(44, 52, 58, 0.12); }
+
+/* ============ PEST PHOTO — full image, no crop, no mask ============ */
+.pest-photo-circle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.pest-photo-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ============ ROUNDED BOX FRAMES (sitewide) ============ */
+/* Every thick bordered box — plan cards, the contact form, account cards,
+   industry list, form inputs, ghost buttons — gets softened corners instead
+   of sharp 90-degree corners. */
+.border-2 {
+  border-radius: 16px;
+}
+
+/* Grids made of several bordered cells (pest photo grids) need the ROUNDING
+   on the outer wrapper specifically, with overflow hidden, so the frame's
+   corners are clean and don't get poked through by a square cell sitting
+   right at the corner. */
+.pest-grid-frame {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+/* Hard override — in case any element still carries the old circular-crop
+   markup (rounded-full + a primary border) from an earlier version of the
+   template, this forces it back to a plain square photo, no exceptions. */
+.pest-photo-circle,
+.pest-photo-circle.rounded-full,
+a.rounded-full.border-primary,
+div.rounded-full.border-primary {
+  border-radius: 0 !important;
+  border: none !important;
+}
+.pest-photo-circle img,
+.rounded-full.border-primary img {
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  border-radius: 0 !important;
+}

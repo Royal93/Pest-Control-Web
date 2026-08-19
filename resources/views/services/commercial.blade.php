@@ -29,5 +29,31 @@
             </div>
         @endforeach
     </div>
+
+    {{-- ============ SERVICES ============ --}}
+    <div class="mt-20">
+        <p class="font-mono text-xs tracking-widest uppercase text-primary mb-3">Services</p>
+        <h2 class="font-display uppercase text-2xl mb-8">Reliable commercial pest control that works</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="border-2 border-primary p-6">
+                <h3 class="font-display uppercase text-lg mb-3">Pest Control Services</h3>
+                <p class="text-inkMuted text-sm">
+                    Pests don't stand a chance with our comprehensive pest control services. From bed bug
+                    treatments to fly control, small fly and drain services, general pest control, and rat
+                    removal, we have your business covered. Our expert team knows how to stop infestations
+                    fast and keep them from coming back, so you can enjoy peace of mind all year long.
+                </p>
+            </div>
+            <div class="border-2 border-primary p-6">
+                <h3 class="font-display uppercase text-lg mb-3">General Pest Control</h3>
+                <p class="text-inkMuted text-sm">
+                    You've put everything into your business — time, energy, passion. You've got enough on
+                    your plate without worrying about pests showing up where they don't belong. From
+                    restaurants to warehouses and retail spaces, we're here to help you protect what you've
+                    built, so you can focus on what matters most — your business.
+                </p>
+            </div>
+        </div>
+    </div>
 </section>
 @endsection

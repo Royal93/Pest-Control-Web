@@ -22,6 +22,7 @@ class PlanSeeder extends Seeder
                     'Detailed report after every visit',
                 ],
                 'terms' => '1 visit/month · VAT incl. · No refill fees',
+                'why' => "Rats are more than just a nuisance; they can damage wiring, compromise insulation, and carry diseases. By choosing a monthly service, you aren't just reacting to a problem — you're preventing one. Our consistent monitoring ensures that if a rodent population tries to move in, we stop them before they reach your front door.",
             ],
         ]);
 
@@ -39,6 +40,18 @@ class PlanSeeder extends Seeder
                 ],
                 'terms' => '4 treatments/yr · Excess visits R90 · 30-day cancel notice',
                 'featured' => true,
+                'math' => "Your subscription ensures your home is treated by a professional every quarter. Because you're a subscriber, any extra treatments you might want are billed at our cost price of R90, rather than a full call-out fee.",
+                'why_reasons' => [
+                    'Budget Friendly: no big surprise invoices — just a small, steady monthly amount.',
+                    "Proactive vs. Reactive: most people call a pest controller when it's too late. We stop the problem before it starts.",
+                    'Professional Grade: we use specialised gels and sprays that are far more effective (and safer) than over-the-counter cans.',
+                ],
+                'fine_print' => [
+                    'Billing: R120 per month via secure automated card payment.',
+                    'Service Interval: one treatment every 90 days.',
+                    'Excess Treatments: anything beyond the 4 scheduled annual visits is invoiced at R90 per visit, payable at time of service.',
+                    "Cancellation: 30 days' notice required.",
+                ],
             ],
         ]);
 
@@ -55,6 +68,18 @@ class PlanSeeder extends Seeder
                     'Garden colony mapping before nests migrate indoors',
                 ],
                 'terms' => '2 visits/yr · Extra callouts R150 · Ant-free 30-day guarantee',
+                'value_proposition' => [
+                    ['label' => 'Standard Single Treatment', 'value' => 'R1,260 + VAT'],
+                    ['label' => 'Two Yearly Treatments', 'value' => 'R2,520 + VAT'],
+                    ['label' => 'AntArmor 365 Subscription', 'value' => 'R156/mo — R1,872 total'],
+                ],
+                'savings' => 'R648 saved per year versus paying for two standard treatments separately.',
+                'why_reasons' => [
+                    'Breaks the Breeding Cycle: ants are seasonal — treating twice a year means the colony never gets the chance to fully rebuild.',
+                    'Pet & Family Safe: targeted gel baits and low-toxicity perimeter sprays focus on ant biology, not drenching your home in chemicals.',
+                    'Financial Peace of Mind: you know exactly what pest control costs every month — no surprise bills when the ants decide to move in.',
+                ],
+                'guarantee' => "The Ant-Free Guarantee: if you see a significant ant trail inside your home within 30 days of a scheduled treatment, we'll come back and spot-treat that area for free.",
             ],
         ]);
     }
