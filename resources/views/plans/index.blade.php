@@ -3,17 +3,17 @@
 @section('title', 'Protection Plans — SP Pest Control')
 
 @section('content')
-<section class="max-w-6xl mx-auto px-7 py-16">
-    <p class="font-mono text-xs tracking-widest uppercase text-primary mb-3">Home Protection Plans</p>
-    <h1 class="font-display uppercase text-3xl mb-4">Subscriptions, not surprise invoices</h1>
-    <p class="text-inkMuted max-w-xl mb-12">
+<x-pest-hero scheme="d" eyebrow="Home Protection Plans" heading-plain="Subscriptions, not" heading-accent="surprise invoices">
+    <p class="text-white/80 text-lg max-w-xl">
         A once-off call-out solves today's problem. A subscription plan stops the next one
         from starting — at a fixed monthly cost, with scheduled visits built in.
     </p>
+</x-pest-hero>
 
+<section class="max-w-6xl mx-auto px-7 py-16">
     <div class="grid md:grid-cols-3 gap-6">
         @foreach ($plans as $plan)
-            <div class="border-2 {{ $plan->meta['featured'] ?? false ? 'border-signal' : 'border-primary' }} flex flex-col">
+            <div class="border-2 {{ $plan->meta['featured'] ?? false ? 'border-accent' : 'border-primary' }} flex flex-col">
                 <div class="p-7 border-b-2 border-line">
                     <h2 class="font-display uppercase text-lg mb-2">{{ $plan->name }}</h2>
                     <p class="font-mono text-3xl">R{{ number_format($plan->price, 0) }}<span class="text-sm text-inkFaint">/mo</span></p>

@@ -13,38 +13,23 @@
     </div>
 </div>
 
-{{-- ============ HERO (video-ready) ============ --}}
-<header class="relative border-b-2 border-primary overflow-hidden">
-    <div class="absolute inset-0 -z-10 bg-bgAlt">
-        <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-90"
-               poster="{{ asset('images/hero-poster.jpg') }}">
-            <source src="{{ asset('videos/hero.mp4') }}" type="video/mp4">
-        </video>
-        <div class="absolute inset-0 bg-white/70"></div>
+<x-pest-hero scheme="a" :compact="false" eyebrow="Residential &amp; Commercial Pest Control" heading-plain="The perimeter is where the problem" heading-accent="ends.">
+    <p class="text-white/80 text-lg mb-8 max-w-xl">
+        We don't spray and pray. SP Pest Control identifies where pests enter, treats the source,
+        and builds a lasting barrier around your property — backed by scheduled visits, not one-off guesswork.
+    </p>
+    <div class="flex flex-wrap gap-4 justify-center md:justify-start mb-10">
+        <a href="{{ route('contact') }}" class="bg-white text-primary uppercase text-sm font-semibold px-6 py-3">Request an Inspection</a>
+        <a href="{{ route('plans.index') }}" class="border-2 border-white text-white uppercase text-sm font-semibold px-6 py-3">View Protection Plans</a>
     </div>
-
-    <div class="max-w-3xl mx-auto px-7 pt-20 pb-24 text-center md:text-left">
-        <p class="font-mono text-xs tracking-widest uppercase text-primary mb-4">Residential &amp; Commercial Pest Control</p>
-        <h1 class="font-display uppercase text-4xl md:text-5xl leading-tight mb-6">
-            The perimeter is where the problem <span class="text-accent">ends.</span>
-        </h1>
-        <p class="text-inkMuted text-lg mb-8 max-w-xl">
-            We don't spray and pray. SP Pest Control identifies where pests enter, treats the source,
-            and builds a lasting barrier around your property — backed by scheduled visits, not one-off guesswork.
-        </p>
-        <div class="flex flex-wrap gap-4 justify-center md:justify-start mb-10">
-            <a href="{{ route('contact') }}" class="bg-primary text-white uppercase text-sm font-semibold px-6 py-3">Request an Inspection</a>
-            <a href="{{ route('plans.index') }}" class="border-2 border-line bg-white uppercase text-sm font-semibold px-6 py-3">View Protection Plans</a>
-        </div>
-        <div class="flex flex-wrap gap-x-8 gap-y-2 justify-center md:justify-start text-sm text-inkMuted font-mono uppercase tracking-wide">
-            <span>{{ $pests->count() + 1 }}+ Pests Treated</span>
-            <span>·</span>
-            <span>90-Day Visit Cycles</span>
-            <span>·</span>
-            <span>Guaranteed Callback</span>
-        </div>
+    <div class="flex flex-wrap gap-x-8 gap-y-2 justify-center md:justify-start text-sm text-white/70 font-mono uppercase tracking-wide">
+        <span>{{ $pests->count() + 1 }}+ Pests Treated</span>
+        <span>·</span>
+        <span>90-Day Visit Cycles</span>
+        <span>·</span>
+        <span>Guaranteed Callback</span>
     </div>
-</header>
+</x-pest-hero>
 
 {{-- ============ PEST TEASER ============ --}}
 <section class="reveal py-20 border-b-2 border-line">
@@ -57,12 +42,12 @@
             <a href="{{ route('services.residential') }}" class="text-primary text-sm font-semibold uppercase whitespace-nowrap">See all pests &rarr;</a>
         </div>
 
-        <div class="reveal-stagger flex flex-wrap border-t-2 border-l-2 border-primary">
+        <div class="reveal-stagger flex flex-wrap justify-center border-t-2 border-l-2 border-primary">
             @if ($featured)
                 <a href="{{ route('services.pest', $featured) }}" class="pest-cell w-1/2 sm:w-1/3 md:w-1/6 border-r-2 border-b-2 border-primary p-5 bg-white flex flex-col items-center text-center gap-2 hover:bg-bgAlt overflow-hidden">
-                    <div class="w-16 h-16 flex items-center justify-center overflow-hidden">
+                    <div class="w-16 h-16 rounded-full border-2 border-primary bg-white overflow-hidden flex items-center justify-center">
                         @if ($featured->photo_path)
-                            <img src="{{ asset($featured->photo_path) }}" alt="{{ $featured->name }}" class="w-16 h-16 object-cover">
+                            <img src="{{ asset($featured->photo_path) }}" alt="{{ $featured->name }}" class="w-full h-full object-cover">
                         @endif
                     </div>
                     <span class="font-display uppercase text-xs">{{ $featured->name }}</span>
@@ -70,9 +55,9 @@
             @endif
             @foreach ($pests as $pest)
                 <a href="{{ route('services.pest', $pest) }}" class="pest-cell w-1/2 sm:w-1/3 md:w-1/6 border-r-2 border-b-2 border-primary p-5 bg-white flex flex-col items-center text-center gap-2 hover:bg-bgAlt overflow-hidden">
-                    <div class="w-16 h-16 flex items-center justify-center overflow-hidden">
+                    <div class="w-16 h-16 rounded-full border-2 border-primary bg-white overflow-hidden flex items-center justify-center">
                         @if ($pest->photo_path)
-                            <img src="{{ asset($pest->photo_path) }}" alt="{{ $pest->name }}" class="w-16 h-16 object-cover">
+                            <img src="{{ asset($pest->photo_path) }}" alt="{{ $pest->name }}" class="w-full h-full object-cover">
                         @endif
                     </div>
                     <span class="font-display uppercase text-xs">{{ $pest->name }}</span>

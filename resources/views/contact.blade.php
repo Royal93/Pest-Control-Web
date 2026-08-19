@@ -3,10 +3,10 @@
 @section('title', 'Contact — SP Pest Control')
 
 @section('content')
-<section class="max-w-3xl mx-auto px-7 py-16">
-    <p class="font-mono text-xs tracking-widest uppercase text-primary mb-3">Contact</p>
-    <h1 class="font-display uppercase text-3xl mb-8">Request an inspection</h1>
+<x-pest-hero scheme="f" eyebrow="Contact" heading-plain="Request an" heading-accent="inspection">
+</x-pest-hero>
 
+<section class="max-w-3xl mx-auto px-7 py-16">
     @if (session('success'))
         <div class="border-2 border-primary p-4 mb-6 text-sm">{{ session('success') }}</div>
     @endif

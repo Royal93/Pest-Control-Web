@@ -3,14 +3,14 @@
 @section('title', 'Commercial Pest Control — SP Pest Control')
 
 @section('content')
-<section class="max-w-6xl mx-auto px-7 py-16">
-    <p class="font-mono text-xs tracking-widest uppercase text-primary mb-3">Commercial</p>
-    <h1 class="font-display uppercase text-3xl mb-4">Built around your industry</h1>
-    <p class="text-inkMuted max-w-xl mb-12">
+<x-pest-hero scheme="b" eyebrow="Commercial" heading-plain="Built around" heading-accent="your industry">
+    <p class="text-white/80 text-lg max-w-xl">
         In shared and public-facing spaces, one pest issue rarely stays contained. We build
         service plans around the layout, traffic and compliance needs of your business.
     </p>
+</x-pest-hero>
 
+<section class="max-w-6xl mx-auto px-7 py-16">
     <div class="divide-y-2 divide-line border-y-2 border-line">
         @foreach ($industries as $i => $industry)
             <div class="grid md:grid-cols-[0.9fr_1.6fr] gap-6 py-8">

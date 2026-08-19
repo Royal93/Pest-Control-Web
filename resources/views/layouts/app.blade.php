@@ -10,7 +10,7 @@
 </head>
 <body class="font-body text-ink bg-white">
 
-    <div class="border-b-2 border-primary sticky top-0 bg-white/95 z-50">
+    <div id="siteTopbar" class="border-b-2 border-primary sticky top-0 bg-white/95 z-50 transition-shadow duration-300">
         <div class="max-w-6xl mx-auto px-7 py-3 flex items-center justify-between">
             <a href="{{ route('home') }}" class="flex items-center gap-3">
                 <img src="{{ asset('images/logo.png') }}" alt="SP Pest Control" class="w-11 h-11 rounded-full object-cover">
