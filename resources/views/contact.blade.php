@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Contact — SP Pest Control')
+@section('title', 'Contact - SP Pest Control')
 
 @section('content')
 <x-pest-hero scheme="f" eyebrow="Contact" heading-plain="Request an" heading-accent="inspection">

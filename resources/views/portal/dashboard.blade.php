@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'My Account — SP Pest Control')
+@section('title', 'My Account - SP Pest Control')
 
 @section('content')
 <x-pest-hero scheme="g" eyebrow="My Account" heading-plain="Welcome back," :heading-accent="auth()->user()->name">

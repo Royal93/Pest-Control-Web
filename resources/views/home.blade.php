@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'SP Pest Control — Residential & Commercial Pest Control')
+@section('title', 'SP Pest Control - Residential & Commercial Pest Control')
 
 @section('content')
 
@@ -16,7 +16,7 @@
 <x-pest-hero scheme="a" :compact="false" eyebrow="Residential &amp; Commercial Pest Control" heading-plain="The perimeter is where the problem" heading-accent="ends.">
     <p class="text-white/80 text-lg mb-8 max-w-xl">
         We don't spray and pray. SP Pest Control identifies where pests enter, treats the source,
-        and builds a lasting barrier around your property — backed by scheduled visits, not one-off guesswork.
+        and builds a lasting barrier around your property - backed by scheduled visits, not one-off guesswork.
     </p>
     <div class="flex flex-wrap gap-4 justify-center md:justify-start mb-10">
         <a href="{{ route('contact') }}" class="bg-white text-primary uppercase text-sm font-semibold px-6 py-3">Request an Inspection</a>
@@ -80,6 +80,38 @@
     </div>
 </section>
 
+{{-- ============ SERVICES IN MOTION (continuous marquee) ============ --}}
+<section class="py-14 border-b-2 border-line bg-white">
+    <div class="max-w-6xl mx-auto px-7 mb-6 text-center">
+        <p class="font-mono text-xs tracking-widest uppercase text-primary mb-2">Full Coverage</p>
+        <h2 class="font-display uppercase text-xl">Every pest we treat, always on call</h2>
+    </div>
+    @php
+        $marqueePests = collect([$featured])->filter()->values()->merge($pests);
+    @endphp
+    <div class="marquee">
+        <div class="marquee-track">
+            @foreach ($marqueePests as $p)
+                <span class="marquee-item">
+                    @if ($p->photo_path)
+                        <img src="{{ asset($p->photo_path) }}" alt="">
+                    @endif
+                    {{ $p->name }}
+                </span>
+            @endforeach
+            {{-- duplicated so the loop is seamless --}}
+            @foreach ($marqueePests as $p)
+                <span class="marquee-item">
+                    @if ($p->photo_path)
+                        <img src="{{ asset($p->photo_path) }}" alt="">
+                    @endif
+                    {{ $p->name }}
+                </span>
+            @endforeach
+        </div>
+    </div>
+</section>
+
 {{-- ============ EXPERTISE / TRUST ============ --}}
 <section class="reveal py-20 border-b-2 border-line bg-bgAlt">
     <div class="max-w-6xl mx-auto px-7 grid md:grid-cols-2 gap-12 items-center">
@@ -88,7 +120,7 @@
             <h2 class="font-display uppercase text-2xl md:text-3xl mb-5">Pest control that treats the source</h2>
             <p class="text-inkMuted mb-6 max-w-xl">
                 Most pest problems are prevented, not just treated. Our technicians are trained to find the
-                entry point, treat the source, and set up a monitoring schedule — so you're not calling us
+                entry point, treat the source, and set up a monitoring schedule - so you're not calling us
                 back every few weeks. We use targeted gel baits and low-toxicity perimeter treatments rather
                 than blanket chemical spraying, so it's safe around kids and pets.
             </p>
@@ -106,7 +138,7 @@
         <p class="font-mono text-xs tracking-widest uppercase text-accent mb-3">Our Guarantee</p>
         <h2 class="font-display uppercase text-2xl md:text-3xl mb-6">We stand behind every scheduled plan</h2>
         <p class="text-inkMuted max-w-2xl mx-auto mb-8">
-            Every protection plan includes a guarantee built into its terms — not a marketing add-on.
+            Every protection plan includes a guarantee built into its terms - not a marketing add-on.
             RoachGuard 360 is priced to break the breeding cycle across every season, and AntArmor 365
             includes a 30-day Ant-Free guarantee: if you see a significant trail within 30 days of a
             scheduled treatment, we come back and spot-treat the area at no charge.
@@ -142,7 +174,7 @@
             <h2 class="font-display uppercase text-2xl md:text-3xl mb-5">Love us at home? We cover your business too.</h2>
             <p class="text-inkMuted mb-6 max-w-xl">
                 SP Pest Control also builds custom plans for multi-family housing, retail, restaurants, and
-                schools — tailored to the layout, traffic, and compliance needs of your business.
+                schools - tailored to the layout, traffic, and compliance needs of your business.
             </p>
             <a href="{{ route('services.commercial') }}" class="text-primary text-sm font-semibold uppercase">See commercial services &rarr;</a>
         </div>

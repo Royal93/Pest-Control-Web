@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Protection Plans — SP Pest Control')
+@section('title', 'Protection Plans - SP Pest Control')
 
 @section('content')
 <x-pest-hero scheme="d" eyebrow="Home Protection Plans" heading-plain="Subscriptions, not" heading-accent="surprise invoices">
     <p class="text-white/80 text-lg max-w-xl">
         A once-off call-out solves today's problem. A subscription plan stops the next one
-        from starting — at a fixed monthly cost, with scheduled visits built in.
+        from starting - at a fixed monthly cost, with scheduled visits built in.
     </p>
 </x-pest-hero>
 

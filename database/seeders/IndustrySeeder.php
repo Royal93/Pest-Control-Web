@@ -12,17 +12,17 @@ class IndustrySeeder extends Seeder
         $industries = [
             [
                 'name' => 'Multi-Family Housing',
-                'description' => "In apartments and townhome communities, a pest problem in one unit doesn't stay put for long — it spreads to neighbouring units fast. We help property managers stay ahead of it with reliable service and proactive communication.",
+                'description' => "In apartments and townhome communities, a pest problem in one unit doesn't stay put for long - it spreads to neighbouring units fast. We help property managers stay ahead of it with reliable service and proactive communication.",
                 'common_pests' => ['Rodents', 'Ants & Cockroaches', 'Flies', 'Termites'],
             ],
             [
                 'name' => 'Retail Businesses',
-                'description' => 'First impressions are everything in retail, and nothing ruins one faster than a pest sighting. High foot traffic and open doors create constant opportunity — we build flexible plans that work around your trading hours.',
+                'description' => 'First impressions are everything in retail, and nothing ruins one faster than a pest sighting. High foot traffic and open doors create constant opportunity - we build flexible plans that work around your trading hours.',
                 'common_pests' => ['Rodents', 'Ants & Cockroaches', 'Flies', 'Termites'],
             ],
             [
                 'name' => 'Restaurants & Food Services',
-                'description' => 'In food service, reputation is everything. We work within the fast pace and tight margins of the industry, helping your team reduce the conditions that attract pests in the first place — not just react once they arrive.',
+                'description' => 'In food service, reputation is everything. We work within the fast pace and tight margins of the industry, helping your team reduce the conditions that attract pests in the first place - not just react once they arrive.',
                 'common_pests' => ['Rodents', 'Ants & Cockroaches', 'Flies', 'Termites'],
             ],
             [

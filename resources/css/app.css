@@ -141,3 +141,93 @@ div.rounded-full.border-primary {
   mask-image: none !important;
   border-radius: 0 !important;
 }
+
+/* ============ NAV LINKS — animated active/hover underline ============ */
+.nav-link {
+  position: relative;
+  padding-bottom: 6px;
+  color: var(--ink);
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background: var(--primary);
+  transition: width 0.3s ease;
+}
+.nav-link:hover {
+  color: var(--primary);
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+.nav-link.is-active {
+  color: var(--primary);
+  font-weight: 600;
+}
+.nav-link.is-active::after {
+  width: 100%;
+}
+
+/* ============ NAV DROPDOWN (mega-menu) ============ */
+[x-cloak] { display: none !important; }
+
+.dropdown-item {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  color: var(--ink);
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.dropdown-item:hover {
+  background: var(--bgAlt, #F5F1EC);
+  color: var(--primary);
+  transform: translateX(3px);
+}
+
+/* ============ CONTINUOUS-MOTION SERVICES MARQUEE ============ */
+.marquee {
+  overflow: hidden;
+  width: 100%;
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 32s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+.marquee-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  padding: 0 2rem;
+  border-right: 2px solid var(--primary);
+  font-family: 'IBM Plex Mono', monospace;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+.marquee-item img {
+  width: 28px;
+  height: 28px;
+  object-fit: cover;
+  border-radius: 9999px;
+  border: 2px solid var(--primary);
+}
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}

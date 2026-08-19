@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Commercial Pest Control — SP Pest Control')
+@section('title', 'Commercial Pest Control - SP Pest Control')
 
 @section('content')
 <x-pest-hero scheme="b" eyebrow="Commercial" heading-plain="Built around" heading-accent="your industry">
@@ -13,7 +13,7 @@
 <section class="max-w-6xl mx-auto px-7 py-16">
     <div class="divide-y-2 divide-line border-y-2 border-line">
         @foreach ($industries as $i => $industry)
-            <div class="grid md:grid-cols-[0.9fr_1.6fr] gap-6 py-8">
+            <div id="{{ \Illuminate\Support\Str::slug($industry->name) }}" class="grid md:grid-cols-[0.9fr_1.6fr] gap-6 py-8 scroll-mt-28">
                 <div>
                     <p class="font-mono text-inkFaint text-sm">0{{ $i + 1 }}</p>
                     <h2 class="font-display uppercase text-xl mt-2">{{ $industry->name }}</h2>
@@ -47,10 +47,10 @@
             <div class="border-2 border-primary p-6">
                 <h3 class="font-display uppercase text-lg mb-3">General Pest Control</h3>
                 <p class="text-inkMuted text-sm">
-                    You've put everything into your business — time, energy, passion. You've got enough on
+                    You've put everything into your business - time, energy, passion. You've got enough on
                     your plate without worrying about pests showing up where they don't belong. From
                     restaurants to warehouses and retail spaces, we're here to help you protect what you've
-                    built, so you can focus on what matters most — your business.
+                    built, so you can focus on what matters most - your business.
                 </p>
             </div>
         </div>

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Http;
 class ChatbotController extends Controller
 {
     /**
-     * Handles chat messages from the widget. The API key lives only in .env —
+     * Handles chat messages from the widget. The API key lives only in .env -
      * the browser never sees it. Builds the system prompt from live DB content
      * so the bot always matches whatever is on the site.
      */
@@ -20,7 +20,7 @@ class ChatbotController extends Controller
             'messages' => 'required|array',
         ]);
 
-        $plans = Plan::all()->map(fn ($p) => "{$p->name}: R{$p->price}/{$p->billing_cycle} — {$p->description}")->implode("\n");
+        $plans = Plan::all()->map(fn ($p) => "{$p->name}: R{$p->price}/{$p->billing_cycle} - {$p->description}")->implode("\n");
         $pests = Pest::pluck('name')->implode(', ');
 
         $systemPrompt = "You are the on-site assistant for SP Pest Control. Answer only using this "
@@ -45,7 +45,7 @@ class ChatbotController extends Controller
             ->implode("\n");
 
         return response()->json([
-            'reply' => $textBlocks ?: "I couldn't process that — please use the contact form.",
+            'reply' => $textBlocks ?: "I couldn't process that - please use the contact form.",
         ]);
     }
 }

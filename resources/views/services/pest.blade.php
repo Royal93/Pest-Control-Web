@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $pest->name . ' Control — SP Pest Control')
+@section('title', $pest->name . ' Control - SP Pest Control')
 
 @section('content')
 <x-pest-hero scheme="h" eyebrow="Residential Pest Control" :heading-plain="$pest->name" heading-accent="Control">
