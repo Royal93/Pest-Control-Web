@@ -13,23 +13,81 @@
     </div>
 </div>
 
-<x-pest-hero scheme="a" :compact="false" eyebrow="Residential &amp; Commercial Pest Control" heading-plain="The perimeter is where the problem" heading-accent="ends.">
-    <p class="text-white/80 text-lg mb-8 max-w-xl">
-        We don't spray and pray. SP Pest Control identifies where pests enter, treats the source,
-        and builds a lasting barrier around your property - backed by scheduled visits, not one-off guesswork.
-    </p>
-    <div class="flex flex-wrap gap-4 justify-center md:justify-start mb-10">
-        <a href="{{ route('contact') }}" class="bg-white text-primary uppercase text-sm font-semibold px-6 py-3">Request an Inspection</a>
-        <a href="{{ route('plans.index') }}" class="border-2 border-white text-white uppercase text-sm font-semibold px-6 py-3">View Protection Plans</a>
+<div x-data="{
+        slide: 0,
+        total: 3,
+        timer: null,
+        start() { this.timer = setInterval(() => this.next(), 6000); },
+        stop() { clearInterval(this.timer); },
+        next() { this.slide = (this.slide + 1) % this.total; },
+        prev() { this.slide = (this.slide - 1 + this.total) % this.total; },
+        go(i) { this.slide = i; this.stop(); this.start(); }
+     }"
+     x-init="start()"
+     @mouseenter="stop()" @mouseleave="start()"
+     class="relative overflow-hidden border-b-2 border-primary h-[480px] md:h-[600px]">
+
+    {{-- Slide 1: real photo, shown in full (no crop) --}}
+    <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out bg-secondary"
+         :class="slide === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0'">
+        <div class="h-full flex flex-col md:flex-row">
+            <div class="w-full md:w-2/5 flex flex-col justify-center px-7 md:px-12 py-8 order-2 md:order-1">
+                <p class="font-mono text-xs tracking-widest uppercase text-accent mb-3">SP Pest Control</p>
+                <h1 class="font-display uppercase text-2xl md:text-4xl text-white leading-tight mb-6">Professional Pest Control You Can Trust</h1>
+                <a href="{{ route('contact') }}" class="self-start bg-primary text-white uppercase text-sm font-semibold px-6 py-3">Request an Inspection</a>
+            </div>
+            <div class="w-full md:w-3/5 flex-1 bg-bgAlt order-1 md:order-2 overflow-hidden">
+                <img src="{{ asset('images/carousel/slide-1.jpg') }}" alt="SP Pest Control technician treating a kitchen baseboard" class="w-full h-full object-contain">
+            </div>
+        </div>
     </div>
-    <div class="flex flex-wrap gap-x-8 gap-y-2 justify-center md:justify-start text-sm text-white/70 font-mono uppercase tracking-wide">
-        <span>{{ $pests->count() + 1 }}+ Pests Treated</span>
-        <span>·</span>
-        <span>90-Day Visit Cycles</span>
-        <span>·</span>
-        <span>Guaranteed Callback</span>
+
+    {{-- Slide 2: real photo, shown in full (no crop) --}}
+    <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out bg-secondary"
+         :class="slide === 1 ? 'opacity-100 z-10' : 'opacity-0 z-0'">
+        <div class="h-full flex flex-col md:flex-row">
+            <div class="w-full md:w-2/5 flex flex-col justify-center px-7 md:px-12 py-8 order-2 md:order-1">
+                <p class="font-mono text-xs tracking-widest uppercase text-accent mb-3">SP Pest Control</p>
+                <h1 class="font-display uppercase text-2xl md:text-4xl text-white leading-tight mb-6">Effective Solutions for Every Pest Problem</h1>
+                <a href="{{ route('contact') }}" class="self-start bg-primary text-white uppercase text-sm font-semibold px-6 py-3">Request an Inspection</a>
+            </div>
+            <div class="w-full md:w-3/5 flex-1 bg-bgAlt order-1 md:order-2 overflow-hidden">
+                <img src="{{ asset('images/carousel/slide-2.jpg') }}" alt="SP Pest Control technician discussing service with a homeowner" class="w-full h-full object-contain">
+            </div>
+
+        </div>
     </div>
-</x-pest-hero>
+
+    {{-- Slide 3: original branded design (no external stock photo needed) --}}
+    <div class="hero-scheme-a absolute inset-0 transition-opacity duration-1000 ease-in-out"
+         :class="slide === 2 ? 'opacity-100 z-10' : 'opacity-0 z-0'">
+        <svg class="floating-pest f-1" viewBox="0 0 100 100"><g><ellipse cx="30" cy="50" rx="10" ry="7"/><ellipse cx="48" cy="50" rx="12" ry="8"/><ellipse cx="68" cy="50" rx="9" ry="7"/><rect x="60" y="28" width="3" height="20" transform="rotate(20 61 38)"/><rect x="74" y="28" width="3" height="20" transform="rotate(-20 75 38)"/></g></svg>
+        <svg class="floating-pest f-3" viewBox="0 0 100 100"><g><circle cx="50" cy="50" r="14"/><rect x="10" y="49" width="26" height="3" transform="rotate(15 23 50)"/><rect x="10" y="59" width="26" height="3" transform="rotate(-15 23 60)"/><rect x="64" y="49" width="26" height="3" transform="rotate(-15 77 50)"/><rect x="64" y="59" width="26" height="3" transform="rotate(15 77 60)"/></g></svg>
+        <svg class="floating-pest f-4" viewBox="0 0 100 100"><g><ellipse cx="45" cy="55" rx="24" ry="15"/><circle cx="74" cy="48" r="9"/><circle cx="83" cy="42" r="3"/><path d="M22 55 Q4 40 10 20" fill="none" stroke="#fff" stroke-width="3"/></g></svg>
+        <svg class="floating-pest f-8" viewBox="0 0 100 100"><g><ellipse cx="45" cy="55" rx="22" ry="14"/><circle cx="70" cy="46" r="8"/><path d="M25 55 Q10 42 14 24" fill="none" stroke="#fff" stroke-width="3"/></g></svg>
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-7">
+            <img src="{{ asset('images/logo.png') }}" alt="SP Pest Control" class="w-24 h-24 md:w-28 md:h-28 rounded-full border-4 border-white/50 mb-6">
+            <p class="font-mono text-xs tracking-widest uppercase text-white/80 mb-3">SP Pest Control</p>
+            <h1 class="font-display uppercase text-3xl md:text-5xl text-white max-w-2xl leading-tight">Say Goodbye to Unwanted Pests</h1>
+        </div>
+    </div>
+
+    {{-- Arrows --}}
+    <button @click="prev()" aria-label="Previous slide" class="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center text-xl">‹</button>
+    <button @click="next()" aria-label="Next slide" class="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center text-xl">›</button>
+
+    {{-- Dots --}}
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+        <button @click="go(0)" aria-label="Slide 1" :class="slide === 0 ? 'bg-white w-6' : 'bg-white/40 w-2.5'" class="h-2.5 rounded-full transition-all duration-300"></button>
+        <button @click="go(1)" aria-label="Slide 2" :class="slide === 1 ? 'bg-white w-6' : 'bg-white/40 w-2.5'" class="h-2.5 rounded-full transition-all duration-300"></button>
+        <button @click="go(2)" aria-label="Slide 3" :class="slide === 2 ? 'bg-white w-6' : 'bg-white/40 w-2.5'" class="h-2.5 rounded-full transition-all duration-300"></button>
+    </div>
+
+    {{-- CTA, sits on top of every slide --}}
+    <div class="absolute top-6 right-6 z-20 hidden md:block">
+        <a href="{{ route('contact') }}" class="bg-primary text-white uppercase text-sm font-semibold px-6 py-3">Request an Inspection</a>
+    </div>
+</div>
 
 {{-- ============ PEST TEASER ============ --}}
 <section class="reveal py-20 border-b-2 border-line">
