@@ -9,9 +9,9 @@
 
 <section class="max-w-4xl mx-auto px-7 py-16">
     <div class="mb-10 flex flex-col md:flex-row gap-8 items-start">
-        <div class="w-full md:w-56 h-56 flex items-center justify-center bg-bgAlt border-2 border-primary flex-shrink-0">
+        <div class="pest-badge pest-badge-lg ring-primary flex-shrink-0">
             @if ($pest->photo_path)
-                <img src="{{ asset($pest->photo_path) }}" alt="{{ $pest->name }}" class="max-h-48 object-contain">
+                <img src="{{ asset($pest->photo_path) }}" alt="{{ $pest->name }}">
             @endif
         </div>
         <div>

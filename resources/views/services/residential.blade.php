@@ -13,9 +13,9 @@
 <section class="max-w-6xl mx-auto px-7 py-16">
     @if ($featured)
         <a href="{{ route('services.pest', $featured) }}" class="block border-2 border-primary mb-10 grid md:grid-cols-2 hover:bg-bgAlt">
-            <div class="bg-bgAlt p-10 flex items-center justify-center">
+            <div class="bg-white p-10 flex items-center justify-center">
                 @if ($featured->photo_path)
-                    <div class="pest-photo-circle w-44 h-44">
+                    <div class="pest-badge pest-badge-lg ring-primary">
                         <img src="{{ asset($featured->photo_path) }}" alt="{{ $featured->name }}">
                     </div>
                 @endif
