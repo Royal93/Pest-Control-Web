@@ -19,6 +19,8 @@ Route::get('/services/commercial', [ServiceController::class, 'commercial'])->na
 Route::get('/plans', [PlanController::class, 'index'])->name('plans.index');
 
 Route::get('/about', fn () => view('about'))->name('about');
+Route::get('/privacy', fn () => view('privacy'))->name('privacy');
+Route::get('/terms', fn () => view('terms'))->name('terms');
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
