@@ -102,39 +102,21 @@
 
         @php
             $allPests = collect([$featured])->filter()->values()->merge($pests);
-            $cols = 6;
-            $remainder = $allPests->count() % $cols;
-            $mainItems = $remainder > 0 ? $allPests->slice(0, -$remainder) : $allPests;
-            $trailingItems = $remainder > 0 ? $allPests->slice(-$remainder)->values() : collect();
+            $ringColors = ['ring-primary', 'ring-secondary', 'ring-accent'];
         @endphp
 
-        <div class="reveal-stagger pest-grid-frame flex flex-wrap border-2 border-primary">
-            @foreach ($mainItems as $p)
-                <a href="{{ route('services.pest', $p) }}" class="pest-cell w-1/2 sm:w-1/3 md:w-1/6 border-r-2 border-b-2 border-primary p-5 bg-white flex flex-col items-center text-center gap-2 hover:bg-bgAlt">
-                    <div class="pest-photo-circle w-16 h-16">
+        <div class="pest-badge-row reveal-stagger">
+            @foreach ($allPests as $i => $p)
+                <a href="{{ route('services.pest', $p) }}" class="pest-badge-wrap">
+                    <div class="pest-badge {{ $ringColors[$i % 3] }}">
                         @if ($p->photo_path)
                             <img src="{{ asset($p->photo_path) }}" alt="{{ $p->name }}">
                         @endif
                     </div>
-                    <span class="font-display uppercase text-xs">{{ $p->name }}</span>
+                    <span class="pest-badge-label">{{ $p->name }}</span>
                 </a>
             @endforeach
         </div>
-
-        @if ($trailingItems->count())
-        <div class="pest-grid-frame flex flex-wrap justify-center bg-white border-2 border-primary mt-[-2px]">
-            @foreach ($trailingItems as $p)
-                <a href="{{ route('services.pest', $p) }}" class="pest-cell w-1/2 sm:w-1/3 md:w-1/6 p-5 flex flex-col items-center text-center gap-2 hover:bg-bgAlt">
-                    <div class="pest-photo-circle w-16 h-16">
-                        @if ($p->photo_path)
-                            <img src="{{ asset($p->photo_path) }}" alt="{{ $p->name }}">
-                        @endif
-                    </div>
-                    <span class="font-display uppercase text-xs">{{ $p->name }}</span>
-                </a>
-            @endforeach
-        </div>
-        @endif
     </div>
 </section>
 
