@@ -66,7 +66,7 @@
         <svg class="floating-pest f-4" viewBox="0 0 100 100"><g><ellipse cx="45" cy="55" rx="24" ry="15"/><circle cx="74" cy="48" r="9"/><circle cx="83" cy="42" r="3"/><path d="M22 55 Q4 40 10 20" fill="none" stroke="#fff" stroke-width="3"/></g></svg>
         <svg class="floating-pest f-8" viewBox="0 0 100 100"><g><ellipse cx="45" cy="55" rx="22" ry="14"/><circle cx="70" cy="46" r="8"/><path d="M25 55 Q10 42 14 24" fill="none" stroke="#fff" stroke-width="3"/></g></svg>
         <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-7">
-            <img src="{{ asset('images/logo.png') }}" alt="SP Pest Control" class="w-24 h-24 md:w-28 md:h-28 rounded-full border-4 border-white/50 mb-6">
+            <img src="{{ asset('images/logo.png') }}" alt="SP Pest Control" class="w-44 h-44 md:w-64 md:h-64 rounded-full border-4 border-white/50 mb-6">
             <p class="font-mono text-xs tracking-widest uppercase text-white/80 mb-3">SP Pest Control</p>
             <h1 class="font-display uppercase text-3xl md:text-5xl text-white max-w-2xl leading-tight">Say Goodbye to Unwanted Pests</h1>
         </div>

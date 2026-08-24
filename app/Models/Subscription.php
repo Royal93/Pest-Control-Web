@@ -8,6 +8,11 @@ class Subscription extends Model
 {
     protected $fillable = ['user_id', 'plan_id', 'status', 'started_at', 'next_visit_at'];
 
+    protected $casts = [
+        'started_at' => 'datetime',
+        'next_visit_at' => 'datetime',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -26,5 +31,10 @@ class Subscription extends Model
     public function invoices()
     {
         return $this->hasMany(Invoice::class);
+    }
+
+    public function serviceRequests()
+    {
+        return $this->hasMany(ServiceRequest::class);
     }
 }

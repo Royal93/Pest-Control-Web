@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lead;
+use App\Rules\SouthAfricanPhone;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
@@ -16,8 +17,8 @@ class ContactController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:50',
-            'email' => 'required|email|max:255',
+            'phone' => ['required', 'string', new SouthAfricanPhone],
+            'email' => 'required|email:rfc|max:255',
             'property_type' => 'nullable|string|max:100',
             'service' => 'nullable|string|max:100',
             'message' => 'nullable|string|max:2000',

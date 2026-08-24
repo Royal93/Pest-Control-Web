@@ -7,6 +7,8 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PortalController;
+use App\Http\Controllers\ServiceReportController;
+use App\Http\Controllers\InvoiceController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -27,6 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/portal', [PortalController::class, 'index'])->name('portal.index');
+
+    Route::get('/portal/service-visits/{serviceVisit}/report', [ServiceReportController::class, 'download'])->name('portal.service-visit.report');
+    Route::get('/portal/invoices/{invoice}/download', [InvoiceController::class, 'download'])->name('portal.invoice.download');
 });
 
 require __DIR__.'/auth.php';

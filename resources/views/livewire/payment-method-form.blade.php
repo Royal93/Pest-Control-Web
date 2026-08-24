@@ -14,16 +14,34 @@
 
     @if ($showForm)
         <form wire:submit.prevent="save" class="space-y-3 mt-4">
-            <input type="text" wire:model="cardholderName" placeholder="Cardholder Name" class="border-2 border-line p-3 w-full">
-            <input type="text" wire:model="cardNumber" placeholder="Card Number" class="border-2 border-line p-3 w-full">
+            <div>
+                <input type="text" wire:model="cardholderName" placeholder="Cardholder Name" class="border-2 border-line p-3 w-full">
+                @error('cardholderName') <span class="text-signal text-xs">{{ $message }}</span> @enderror
+            </div>
+            <div>
+                <input type="text" wire:model="cardNumber" placeholder="Card Number" class="border-2 border-line p-3 w-full">
+                @error('cardNumber') <span class="text-signal text-xs">{{ $message }}</span> @enderror
+            </div>
             <div class="flex gap-3">
-                <input type="text" wire:model="expMonth" placeholder="MM" class="border-2 border-line p-3 w-1/2">
-                <input type="text" wire:model="expYear" placeholder="YY" class="border-2 border-line p-3 w-1/2">
+                <div class="w-1/3">
+                    <input type="text" wire:model="expMonth" placeholder="MM" class="border-2 border-line p-3 w-full">
+                    @error('expMonth') <span class="text-signal text-xs">{{ $message }}</span> @enderror
+                </div>
+                <div class="w-1/3">
+                    <input type="text" wire:model="expYear" placeholder="YY" class="border-2 border-line p-3 w-full">
+                    @error('expYear') <span class="text-signal text-xs">{{ $message }}</span> @enderror
+                </div>
+                <div class="w-1/3">
+                    <input type="text" wire:model="cvv" placeholder="CVV" class="border-2 border-line p-3 w-full">
+                    @error('cvv') <span class="text-signal text-xs">{{ $message }}</span> @enderror
+                </div>
             </div>
             <button type="submit" class="bg-primary text-white uppercase text-sm font-semibold px-5 py-3 w-full">Save Card</button>
             <p class="text-xs text-inkFaint border-t-2 border-line pt-3">
-                In production, swap this for your payment gateway's hosted card field (Stripe Elements,
-                PayFast, etc.) so the raw card number never touches this form or your server.
+                Demo only - no real transaction is processed. Card number is checksum-validated (the same
+                check real issuers use to catch typos), and only the last 4 digits are ever stored - the
+                CVV is never saved, even temporarily. Connect a real payment gateway via the backend for
+                live billing.
             </p>
         </form>
     @endif

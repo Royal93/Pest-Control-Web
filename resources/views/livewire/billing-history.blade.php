@@ -6,6 +6,7 @@
                 <th class="py-2">Date</th>
                 <th class="py-2">Amount</th>
                 <th class="py-2">Status</th>
+                <th class="py-2"></th>
             </tr>
         </thead>
         <tbody>
@@ -14,9 +15,12 @@
                     <td class="py-2">{{ $invoice->issued_at?->format('Y-m-d') }}</td>
                     <td class="py-2 text-inkMuted">R{{ number_format($invoice->amount, 2) }}</td>
                     <td class="py-2 text-inkMuted">{{ ucfirst($invoice->status) }}</td>
+                    <td class="py-2 text-right">
+                        <a href="{{ route('portal.invoice.download', $invoice) }}" class="text-primary text-xs font-semibold uppercase">Download</a>
+                    </td>
                 </tr>
             @empty
-                <tr><td colspan="3" class="py-3 text-inkFaint">No billing history yet.</td></tr>
+                <tr><td colspan="4" class="py-3 text-inkFaint">No billing history yet.</td></tr>
             @endforelse
         </tbody>
     </table>

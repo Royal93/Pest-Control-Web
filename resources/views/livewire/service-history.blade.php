@@ -6,6 +6,7 @@
                 <th class="py-2">Date</th>
                 <th class="py-2">Notes</th>
                 <th class="py-2">Status</th>
+                <th class="py-2"></th>
             </tr>
         </thead>
         <tbody>
@@ -14,9 +15,12 @@
                     <td class="py-2">{{ $visit->visit_date?->format('Y-m-d') ?? 'Pending' }}</td>
                     <td class="py-2 text-inkMuted">{{ $visit->technician_notes }}</td>
                     <td class="py-2 text-inkMuted">{{ ucfirst($visit->status) }}</td>
+                    <td class="py-2 text-right">
+                        <a href="{{ route('portal.service-visit.report', $visit) }}" class="text-primary text-xs font-semibold uppercase">Download Report</a>
+                    </td>
                 </tr>
             @empty
-                <tr><td colspan="3" class="py-3 text-inkFaint">No services scheduled yet.</td></tr>
+                <tr><td colspan="4" class="py-3 text-inkFaint">No services scheduled yet.</td></tr>
             @endforelse
         </tbody>
     </table>
