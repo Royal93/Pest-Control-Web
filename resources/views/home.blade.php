@@ -28,8 +28,8 @@
      class="relative overflow-hidden border-b-2 border-primary h-[480px] md:h-[600px]">
 
     {{-- Slide 1: real photo, shown in full (no crop) --}}
-    <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out bg-secondary"
-         :class="slide === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0'">
+    <div class="absolute inset-0 transition-all duration-500 ease-out bg-secondary"
+         :class="slide === 0 ? 'opacity-100 z-10 scale-100' : 'opacity-0 z-0 scale-105'">
         <div class="h-full flex flex-col md:flex-row">
             <div class="w-full md:w-2/5 flex flex-col justify-center px-7 md:px-12 py-8 order-2 md:order-1">
                 <p class="font-mono text-xs tracking-widest uppercase text-accent mb-3">SP Pest Control</p>
@@ -43,8 +43,8 @@
     </div>
 
     {{-- Slide 2: real photo, shown in full (no crop) --}}
-    <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out bg-secondary"
-         :class="slide === 1 ? 'opacity-100 z-10' : 'opacity-0 z-0'">
+    <div class="absolute inset-0 transition-all duration-500 ease-out bg-secondary"
+         :class="slide === 1 ? 'opacity-100 z-10 scale-100' : 'opacity-0 z-0 scale-105'">
         <div class="h-full flex flex-col md:flex-row">
             <div class="w-full md:w-2/5 flex flex-col justify-center px-7 md:px-12 py-8 order-2 md:order-1">
                 <p class="font-mono text-xs tracking-widest uppercase text-accent mb-3">SP Pest Control</p>
@@ -59,8 +59,8 @@
     </div>
 
     {{-- Slide 3: original branded design (no external stock photo needed) --}}
-    <div class="hero-scheme-a absolute inset-0 transition-opacity duration-1000 ease-in-out"
-         :class="slide === 2 ? 'opacity-100 z-10' : 'opacity-0 z-0'">
+    <div class="hero-scheme-a absolute inset-0 transition-all duration-500 ease-out"
+         :class="slide === 2 ? 'opacity-100 z-10 scale-100' : 'opacity-0 z-0 scale-105'">
         <svg class="floating-pest f-1" viewBox="0 0 100 100"><g><ellipse cx="30" cy="50" rx="10" ry="7"/><ellipse cx="48" cy="50" rx="12" ry="8"/><ellipse cx="68" cy="50" rx="9" ry="7"/><rect x="60" y="28" width="3" height="20" transform="rotate(20 61 38)"/><rect x="74" y="28" width="3" height="20" transform="rotate(-20 75 38)"/></g></svg>
         <svg class="floating-pest f-3" viewBox="0 0 100 100"><g><circle cx="50" cy="50" r="14"/><rect x="10" y="49" width="26" height="3" transform="rotate(15 23 50)"/><rect x="10" y="59" width="26" height="3" transform="rotate(-15 23 60)"/><rect x="64" y="49" width="26" height="3" transform="rotate(-15 77 50)"/><rect x="64" y="59" width="26" height="3" transform="rotate(15 77 60)"/></g></svg>
         <svg class="floating-pest f-4" viewBox="0 0 100 100"><g><ellipse cx="45" cy="55" rx="24" ry="15"/><circle cx="74" cy="48" r="9"/><circle cx="83" cy="42" r="3"/><path d="M22 55 Q4 40 10 20" fill="none" stroke="#fff" stroke-width="3"/></g></svg>
@@ -78,9 +78,9 @@
 
     {{-- Dots --}}
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-        <button @click="go(0)" aria-label="Slide 1" :class="slide === 0 ? 'bg-white w-6' : 'bg-white/40 w-2.5'" class="h-2.5 rounded-full transition-all duration-300"></button>
-        <button @click="go(1)" aria-label="Slide 2" :class="slide === 1 ? 'bg-white w-6' : 'bg-white/40 w-2.5'" class="h-2.5 rounded-full transition-all duration-300"></button>
-        <button @click="go(2)" aria-label="Slide 3" :class="slide === 2 ? 'bg-white w-6' : 'bg-white/40 w-2.5'" class="h-2.5 rounded-full transition-all duration-300"></button>
+        <button @click="go(0)" aria-label="Slide 1" :class="slide === 0 ? 'bg-white w-6' : 'bg-white/40 w-2.5'" class="h-2.5 rounded-full transition-all duration-200"></button>
+        <button @click="go(1)" aria-label="Slide 2" :class="slide === 1 ? 'bg-white w-6' : 'bg-white/40 w-2.5'" class="h-2.5 rounded-full transition-all duration-200"></button>
+        <button @click="go(2)" aria-label="Slide 3" :class="slide === 2 ? 'bg-white w-6' : 'bg-white/40 w-2.5'" class="h-2.5 rounded-full transition-all duration-200"></button>
     </div>
 
     {{-- CTA, sits on top of every slide --}}
