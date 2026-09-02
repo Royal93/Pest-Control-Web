@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $pest->name . ' Control - SP Pest Control')
+@section('title', $pest->name . ' Control — SP Pest Control')
 
 @section('content')
 <x-pest-hero scheme="h" eyebrow="Residential Pest Control" :heading-plain="$pest->name" heading-accent="Control">
@@ -8,7 +8,7 @@
 </x-pest-hero>
 
 <section class="max-w-4xl mx-auto px-7 py-16">
-    <div class="mb-10 flex flex-col md:flex-row gap-8 items-start">
+    <div class="mb-10 flex flex-col md:flex-row gap-8 items-center">
         <div class="pest-badge pest-badge-lg ring-primary flex-shrink-0">
             @if ($pest->photo_path)
                 <img src="{{ asset($pest->photo_path) }}" alt="{{ $pest->name }}">
@@ -44,13 +44,5 @@
         This information is provided for general awareness and is not medical advice. If you or someone
         else is experiencing a severe reaction to a bite or sting, seek medical attention.
     </p>
-
-    <div class="bg-secondary text-white p-8 text-center">
-        <h2 class="font-display uppercase text-xl mb-3">Dealing with {{ $pest->name }}?</h2>
-        <p class="text-white/70 mb-6">Request an inspection and we'll assess the extent of the problem before recommending treatment.</p>
-        <a href="{{ route('contact') }}" class="inline-block bg-primary text-white uppercase text-sm font-semibold px-6 py-3">
-            Request an Inspection
-        </a>
-    </div>
 </section>
 @endsection

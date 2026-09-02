@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewLeadNotification;
 use App\Models\Lead;
 use App\Rules\SouthAfricanPhone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -24,7 +26,7 @@ class ContactController extends Controller
             'message' => 'nullable|string|max:2000',
         ]);
 
-        Lead::create([
+        $lead = Lead::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'phone' => $validated['phone'],
@@ -33,6 +35,9 @@ class ContactController extends Controller
             'message' => $validated['message'] ?? null,
             'source' => 'contact_form',
         ]);
+
+        Mail::to(config('mail.lead_notify_address', 'gorongaroyal@gmail.com'))
+            ->send(new NewLeadNotification($lead));
 
         return back()->with('success', 'Request received. A technician will follow up shortly to confirm your inspection.');
     }
