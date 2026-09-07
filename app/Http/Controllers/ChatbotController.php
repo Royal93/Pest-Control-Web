@@ -28,24 +28,38 @@ class ChatbotController extends Controller
             . "If the visitor wants to book, ask for name, phone, and pest/service, then let them know "
             . "a technician will follow up.";
 
-        $response = Http::withHeaders([
-            'x-api-key' => config('services.anthropic.key'),
-            'anthropic-version' => '2023-06-01',
-            'content-type' => 'application/json',
-        ])->post('https://api.anthropic.com/v1/messages', [
-            'model' => config('services.anthropic.model', 'claude-sonnet-4-6'),
-            'max_tokens' => 1000,
-            'system' => $systemPrompt,
-            'messages' => $validated['messages'],
-        ]);
+        // Gemini's API doesn't have a distinct "system" role like Anthropic's —
+        // instead the system prompt goes in a top-level systemInstruction block,
+        // and the conversation itself is "contents", with each message's role
+        // being "user" or "model" (not "assistant" like most other APIs) and
+        // the text nested under parts: [{ text: "..." }] instead of a flat string.
+        $contents = collect($validated['messages'])->map(fn ($m) => [
+            'role' => $m['role'] === 'assistant' ? 'model' : 'user',
+            'parts' => [['text' => $m['content']]],
+        ])->all();
 
-        $textBlocks = collect($response->json('content', []))
-            ->where('type', 'text')
-            ->pluck('text')
-            ->implode("\n");
+        $model = config('services.gemini.model', 'gemini-2.0-flash');
+
+        $response = Http::withHeaders([
+            'content-type' => 'application/json',
+        ])->post(
+            "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key=" . config('services.gemini.key'),
+            [
+                'systemInstruction' => [
+                    'parts' => [['text' => $systemPrompt]],
+                ],
+                'contents' => $contents,
+            ]
+        );
+
+        $reply = $response->json('candidates.0.content.parts.0.text');
+
+        if (! $reply) {
+            \Log::warning('Gemini chatbot request failed', $response->json() ?? ['status' => $response->status()]);
+        }
 
         return response()->json([
-            'reply' => $textBlocks ?: "I couldn't process that - please use the contact form.",
+            'reply' => $reply ?: "I couldn't process that - please use the contact form.",
         ]);
     }
 }

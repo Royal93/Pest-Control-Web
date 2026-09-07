@@ -27,3 +27,7 @@ Homestead.yaml
 Thumbs.db
 node_modules
 .env
+
+# Deployment staging artifacts (not needed once auto-deploy is set up)
+/sppest-deploy
+sppest-deploy.zip
