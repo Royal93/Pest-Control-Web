@@ -41,6 +41,8 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME_APP }}
           password: ${{ secrets.FTP_PASSWORD_APP }}
+          protocol: ftps
+          port: 21
           local-dir: ./
           server-dir: ./
           dangerous-clean-slate: false
@@ -63,6 +65,8 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME_PUBLIC }}
           password: ${{ secrets.FTP_PASSWORD_PUBLIC }}
+          protocol: ftps
+          port: 21
           local-dir: ./public/
           server-dir: ./
           dangerous-clean-slate: false
