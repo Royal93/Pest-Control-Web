@@ -8,7 +8,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - name: Checkout code
@@ -34,45 +34,44 @@ jobs:
       - name: Build frontend assets
         run: npm run build
 
-      # ── Deploy 1: the full Laravel app (outside the web root) ──
-      - name: Deploy app code to sppestapp/
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME_APP }}
-          password: ${{ secrets.FTP_PASSWORD_APP }}
-          protocol: ftps
-          port: 21
-          local-dir: ./
-          server-dir: ./
-          dangerous-clean-slate: false
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/.github/**
-            **/node_modules/**
-            **/tests/**
-            **/public/build/**
-            **/storage/app/public/**
-            **/.env
-            **/sppest-deploy/**
-            **/*.zip
+      - name: Install zip
+        run: sudo apt-get update && sudo apt-get install -y zip
 
-      # ── Deploy 2: only the public assets (into the actual web root) ──
-      - name: Deploy public assets to public_html/
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME_PUBLIC }}
-          password: ${{ secrets.FTP_PASSWORD_PUBLIC }}
-          protocol: ftps
-          port: 21
-          local-dir: ./public/
-          server-dir: ./
-          dangerous-clean-slate: false
-          exclude: |
-            **/storage/**
-            **/.htaccess
-            **/wp-content/**
-            **/dir/**
-            **/ym/**
+      # ── Package the full app (outside the web root) ──
+      - name: Package app code
+        run: |
+          zip -rq app-deploy.zip . \
+            -x '.git/*' -x '.git*' -x '.github/*' -x '.github/**' \
+            -x 'node_modules/*' -x 'node_modules/**' \
+            -x 'tests/*' -x 'tests/**' \
+            -x 'public/build/*' -x 'public/build/**' \
+            -x 'storage/app/public/*' -x 'storage/app/public/**' \
+            -x '.env' \
+            -x 'sppest-deploy/*' -x 'sppest-deploy/**' \
+            -x '*.zip'
+
+      # ── Package only the public assets (into the actual web root) ──
+      - name: Package public assets
+        run: |
+          cd public
+          zip -rq ../public-deploy.zip . \
+            -x 'storage/*' -x 'storage/**' \
+            -x '.htaccess' \
+            -x 'wp-content/*' -x 'wp-content/**' \
+            -x 'dir/*' -x 'dir/**' \
+            -x 'ym/*' -x 'ym/**'
+          cd ..
+
+      - name: Deploy app code via webhook
+        run: |
+          curl -f --max-time 120 -X POST https://nomorepest.co.za/deploy-receiver.php \
+            -F "token=${{ secrets.DEPLOY_TOKEN }}" \
+            -F "target=app" \
+            -F "payload=@app-deploy.zip"
+
+      - name: Deploy public assets via webhook
+        run: |
+          curl -f --max-time 120 -X POST https://nomorepest.co.za/deploy-receiver.php \
+            -F "token=${{ secrets.DEPLOY_TOKEN }}" \
+            -F "target=public" \
+            -F "payload=@public-deploy.zip"
