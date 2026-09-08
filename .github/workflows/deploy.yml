@@ -45,7 +45,7 @@ jobs:
             -x 'node_modules/*' -x 'node_modules/**' \
             -x 'tests/*' -x 'tests/**' \
             -x 'public/build/*' -x 'public/build/**' \
-            -x 'storage/app/public/*' -x 'storage/app/public/**' \
+            -x 'storage/*' -x 'storage/**' \
             -x '.env' \
             -x 'sppest-deploy/*' -x 'sppest-deploy/**' \
             -x '*.zip'
