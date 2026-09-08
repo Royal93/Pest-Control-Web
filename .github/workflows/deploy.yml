@@ -64,14 +64,26 @@ jobs:
 
       - name: Deploy app code via webhook
         run: |
-          curl -f --max-time 120 -X POST https://nomorepest.co.za/deploy-receiver.php \
+          response=$(curl -sS --max-time 120 -w "\nHTTP_STATUS:%{http_code}" -X POST https://nomorepest.co.za/deploy-receiver.php \
             -F "token=${{ secrets.DEPLOY_TOKEN }}" \
             -F "target=app" \
-            -F "payload=@app-deploy.zip"
+            -F "payload=@app-deploy.zip")
+          echo "$response"
+          status=$(echo "$response" | grep -o 'HTTP_STATUS:[0-9]*' | cut -d: -f2)
+          if [ "$status" != "200" ]; then
+            echo "Deploy failed with status $status"
+            exit 1
+          fi
 
       - name: Deploy public assets via webhook
         run: |
-          curl -f --max-time 120 -X POST https://nomorepest.co.za/deploy-receiver.php \
+          response=$(curl -sS --max-time 120 -w "\nHTTP_STATUS:%{http_code}" -X POST https://nomorepest.co.za/deploy-receiver.php \
             -F "token=${{ secrets.DEPLOY_TOKEN }}" \
             -F "target=public" \
-            -F "payload=@public-deploy.zip"
+            -F "payload=@public-deploy.zip")
+          echo "$response"
+          status=$(echo "$response" | grep -o 'HTTP_STATUS:[0-9]*' | cut -d: -f2)
+          if [ "$status" != "200" ]; then
+            echo "Deploy failed with status $status"
+            exit 1
+          fi
