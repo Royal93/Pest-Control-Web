@@ -37,6 +37,11 @@ jobs:
       - name: Install zip
         run: sudo apt-get update && sudo apt-get install -y zip
 
+      - name: Debug - check secret length
+        run: |
+          TOKEN="${{ secrets.DEPLOY_TOKEN }}"
+          echo "Token length as seen by GitHub Actions: ${#TOKEN}"
+
       # ── Package the full app (outside the web root) ──
       - name: Package app code
         run: |
