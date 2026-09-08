@@ -166,9 +166,10 @@
             </p>
             <a href="{{ route('about') }}" class="text-primary text-sm font-semibold uppercase">Learn more about us &rarr;</a>
         </div>
-        <div class="border-2 border-primary bg-white aspect-video flex items-center justify-center">
-            <span class="font-mono text-xs uppercase text-inkFaint">Technician photo goes here</span>
-        </div>
+      <div class="border-2 border-primary bg-white aspect-video flex items-center justify-center overflow-hidden">
+    <img src="{{ asset('images/technician.jpg') }}" alt="SP Pest Control technician" class="w-full h-full object-cover">
+</div>
+    </div>
     </div>
 </section>
 
