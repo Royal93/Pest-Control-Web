@@ -84,6 +84,10 @@
                 <a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'is-active' : '' }}">Contact</a>
                 @auth
                     <a href="{{ route('portal.index') }}" class="nav-link {{ request()->routeIs('portal.index') ? 'is-active' : '' }}">My Account</a>
+                    <form method="POST" action="{{ route('logout') }}" class="inline">
+                        @csrf
+                        <button type="submit" class="nav-link bg-transparent border-0 p-0 cursor-pointer">Log Out</button>
+                    </form>
                 @else
                     <a href="{{ route('login') }}" class="nav-link {{ request()->routeIs('login') ? 'is-active' : '' }}">Log In</a>
                 @endauth
@@ -211,5 +215,32 @@
     </footer>
     @include('components.chat-widget')
     @livewireScripts
+    @auth
+        <script>
+            (function () {
+                const timeoutMinutes = 15;
+                const timeoutMs = timeoutMinutes * 60 * 1000;
+                let idleTimer;
+
+                function logoutNow() {
+                    document.getElementById('idle-logout-form').submit();
+                }
+
+                function resetTimer() {
+                    clearTimeout(idleTimer);
+                    idleTimer = setTimeout(logoutNow, timeoutMs);
+                }
+
+                ['mousemove', 'mousedown', 'keydown', 'scroll', 'touchstart'].forEach(function (evt) {
+                    document.addEventListener(evt, resetTimer, { passive: true });
+                });
+
+                resetTimer();
+            })();
+        </script>
+        <form id="idle-logout-form" method="POST" action="{{ route('logout') }}" class="hidden">
+            @csrf
+        </form>
+    @endauth
 </body>
 </html>
