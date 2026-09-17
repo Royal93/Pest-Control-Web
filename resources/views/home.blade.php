@@ -15,7 +15,7 @@
 
 <div x-data="{
         slide: 0,
-        total: 4,
+        total: 3,
         timer: null,
         start() { this.timer = setInterval(() => this.next(), 6000); },
         stop() { clearInterval(this.timer); },
@@ -27,40 +27,47 @@
      @mouseenter="stop()" @mouseleave="start()"
      class="relative overflow-hidden border-b-2 border-primary h-[480px] md:h-[600px]">
 
+    {{-- Persistent background: always running, never swaps with the slides above it --}}
+    <div class="absolute inset-0 z-0 overflow-hidden">
+        <img src="{{ asset('images/carousel/slide-4.jpg') }}" alt="" aria-hidden="true"
+             class="w-full h-full object-cover kenburns">
+    </div>
+
     {{-- Slide 1: real photo, shown in full (no crop) --}}
-    <div class="absolute inset-0 transition-all duration-500 ease-out bg-secondary"
+    <div class="absolute inset-0 transition-all duration-500 ease-out"
          :class="slide === 0 ? 'opacity-100 z-10 scale-100' : 'opacity-0 z-0 scale-105'">
         <div class="h-full flex flex-col md:flex-row">
-            <div class="w-full md:w-2/5 flex flex-col justify-center px-7 md:px-12 py-8 order-2 md:order-1">
+            <div class="w-full md:w-2/5 flex flex-col justify-center px-7 md:px-12 py-8 order-2 md:order-1 bg-secondary">
                 <p class="font-mono text-xs tracking-widest uppercase text-accent mb-3">SP Pest Control</p>
                 <h1 class="font-display uppercase text-2xl md:text-4xl text-white leading-tight mb-6">Professional Pest Control You Can Trust</h1>
                 <a href="{{ route('contact') }}" class="self-start bg-primary text-white uppercase text-sm font-semibold px-6 py-3">Request an Inspection</a>
             </div>
-            <div class="w-full md:w-3/5 flex-1 bg-bgAlt order-1 md:order-2 overflow-hidden">
-                <img src="{{ asset('images/carousel/slide-1.jpg') }}" alt="SP Pest Control technician treating a kitchen baseboard" class="w-full h-full object-contain">
+            <div class="w-full md:w-3/5 flex-1 order-1 md:order-2 overflow-hidden">
+                <img src="{{ asset('images/carousel/slide-1.jpg') }}" alt="SP Pest Control technician treating a kitchen baseboard" class="w-full h-full object-contain opacity-40">
             </div>
         </div>
     </div>
 
     {{-- Slide 2: real photo, shown in full (no crop) --}}
-    <div class="absolute inset-0 transition-all duration-500 ease-out bg-secondary"
+    <div class="absolute inset-0 transition-all duration-500 ease-out"
          :class="slide === 1 ? 'opacity-100 z-10 scale-100' : 'opacity-0 z-0 scale-105'">
         <div class="h-full flex flex-col md:flex-row">
-            <div class="w-full md:w-2/5 flex flex-col justify-center px-7 md:px-12 py-8 order-2 md:order-1">
+            <div class="w-full md:w-2/5 flex flex-col justify-center px-7 md:px-12 py-8 order-2 md:order-1 bg-secondary">
                 <p class="font-mono text-xs tracking-widest uppercase text-accent mb-3">SP Pest Control</p>
                 <h1 class="font-display uppercase text-2xl md:text-4xl text-white leading-tight mb-6">Effective Solutions for Every Pest Problem</h1>
                 <a href="{{ route('contact') }}" class="self-start bg-primary text-white uppercase text-sm font-semibold px-6 py-3">Request an Inspection</a>
             </div>
-            <div class="w-full md:w-3/5 flex-1 bg-bgAlt order-1 md:order-2 overflow-hidden">
-                <img src="{{ asset('images/carousel/slide-2.jpg') }}" alt="SP Pest Control technician discussing service with a homeowner" class="w-full h-full object-contain">
+            <div class="w-full md:w-3/5 flex-1 order-1 md:order-2 overflow-hidden">
+                <img src="{{ asset('images/carousel/slide-2.jpg') }}" alt="SP Pest Control technician discussing service with a homeowner" class="w-full h-full object-contain opacity-40">
             </div>
 
         </div>
     </div>
 
     {{-- Slide 3: original branded design (no external stock photo needed) --}}
-    <div class="hero-scheme-a absolute inset-0 transition-all duration-500 ease-out"
+    <div class="absolute inset-0 transition-all duration-500 ease-out"
          :class="slide === 2 ? 'opacity-100 z-10 scale-100' : 'opacity-0 z-0 scale-105'">
+        <div class="hero-scheme-a absolute inset-0 opacity-40"></div>
         <svg class="floating-pest f-1" viewBox="0 0 100 100"><g><ellipse cx="30" cy="50" rx="10" ry="7"/><ellipse cx="48" cy="50" rx="12" ry="8"/><ellipse cx="68" cy="50" rx="9" ry="7"/><rect x="60" y="28" width="3" height="20" transform="rotate(20 61 38)"/><rect x="74" y="28" width="3" height="20" transform="rotate(-20 75 38)"/></g></svg>
         <svg class="floating-pest f-3" viewBox="0 0 100 100"><g><circle cx="50" cy="50" r="14"/><rect x="10" y="49" width="26" height="3" transform="rotate(15 23 50)"/><rect x="10" y="59" width="26" height="3" transform="rotate(-15 23 60)"/><rect x="64" y="49" width="26" height="3" transform="rotate(-15 77 50)"/><rect x="64" y="59" width="26" height="3" transform="rotate(15 77 60)"/></g></svg>
         <svg class="floating-pest f-4" viewBox="0 0 100 100"><g><ellipse cx="45" cy="55" rx="24" ry="15"/><circle cx="74" cy="48" r="9"/><circle cx="83" cy="42" r="3"/><path d="M22 55 Q4 40 10 20" fill="none" stroke="#fff" stroke-width="3"/></g></svg>
@@ -69,19 +76,6 @@
             <img src="{{ asset('images/logo.png') }}" alt="SP Pest Control" class="w-44 h-44 md:w-64 md:h-64 rounded-full border-4 border-white/50 mb-6">
             <p class="font-mono text-xs tracking-widest uppercase text-white/80 mb-3">SP Pest Control</p>
             <h1 class="font-display uppercase text-3xl md:text-5xl text-white max-w-2xl leading-tight">Say Goodbye to Unwanted Pests</h1>
-        </div>
-    </div>
-
-    {{-- Slide 4: full-width background photo with slow zoom (Ken Burns effect) and centered overlay text --}}
-    <div class="absolute inset-0 transition-all duration-500 ease-out overflow-hidden"
-         :class="slide === 3 ? 'opacity-100 z-10 scale-100' : 'opacity-0 z-0 scale-105'">
-        <img src="{{ asset('images/carousel/slide-4.jpg') }}" alt="Happy family in front of their home, protected by SP Pest Control"
-             class="absolute inset-0 w-full h-full object-cover kenburns">
-        <div class="absolute inset-0 bg-secondary/60"></div>
-        <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-7">
-            <p class="font-mono text-xs tracking-widest uppercase text-accent mb-3">SP Pest Control</p>
-            <h1 class="font-display uppercase text-2xl md:text-4xl text-white leading-tight mb-6 max-w-2xl">Your Family's Safety Is Our Top Priority</h1>
-            <a href="{{ route('contact') }}" class="bg-primary text-white uppercase text-sm font-semibold px-6 py-3">Request an Inspection</a>
         </div>
     </div>
 
@@ -94,7 +88,6 @@
         <button @click="go(0)" aria-label="Slide 1" :class="slide === 0 ? 'bg-white w-6' : 'bg-white/40 w-2.5'" class="h-2.5 rounded-full transition-all duration-200"></button>
         <button @click="go(1)" aria-label="Slide 2" :class="slide === 1 ? 'bg-white w-6' : 'bg-white/40 w-2.5'" class="h-2.5 rounded-full transition-all duration-200"></button>
         <button @click="go(2)" aria-label="Slide 3" :class="slide === 2 ? 'bg-white w-6' : 'bg-white/40 w-2.5'" class="h-2.5 rounded-full transition-all duration-200"></button>
-        <button @click="go(3)" aria-label="Slide 4" :class="slide === 3 ? 'bg-white w-6' : 'bg-white/40 w-2.5'" class="h-2.5 rounded-full transition-all duration-200"></button>
     </div>
 
     {{-- CTA, sits on top of every slide --}}
