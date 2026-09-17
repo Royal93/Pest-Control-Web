@@ -72,18 +72,16 @@
         </div>
     </div>
 
-    {{-- Slide 4: real photo, shown in full (no crop) --}}
-    <div class="absolute inset-0 transition-all duration-500 ease-out bg-secondary"
+    {{-- Slide 4: full-width background photo with slow zoom (Ken Burns effect) and centered overlay text --}}
+    <div class="absolute inset-0 transition-all duration-500 ease-out overflow-hidden"
          :class="slide === 3 ? 'opacity-100 z-10 scale-100' : 'opacity-0 z-0 scale-105'">
-        <div class="h-full flex flex-col md:flex-row">
-            <div class="w-full md:w-2/5 flex flex-col justify-center px-7 md:px-12 py-8 order-2 md:order-1">
-                <p class="font-mono text-xs tracking-widest uppercase text-accent mb-3">SP Pest Control</p>
-                <h1 class="font-display uppercase text-2xl md:text-4xl text-white leading-tight mb-6">Your Family's Safety Is Our Top Priority</h1>
-                <a href="{{ route('contact') }}" class="self-start bg-primary text-white uppercase text-sm font-semibold px-6 py-3">Request an Inspection</a>
-            </div>
-            <div class="w-full md:w-3/5 flex-1 bg-bgAlt order-1 md:order-2 overflow-hidden">
-                <img src="{{ asset('images/carousel/slide-4.jpg') }}" alt="Happy family in front of their home, protected by SP Pest Control" class="w-full h-full object-contain">
-            </div>
+        <img src="{{ asset('images/carousel/slide-4.jpg') }}" alt="Happy family in front of their home, protected by SP Pest Control"
+             class="absolute inset-0 w-full h-full object-cover kenburns">
+        <div class="absolute inset-0 bg-secondary/60"></div>
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-7">
+            <p class="font-mono text-xs tracking-widest uppercase text-accent mb-3">SP Pest Control</p>
+            <h1 class="font-display uppercase text-2xl md:text-4xl text-white leading-tight mb-6 max-w-2xl">Your Family's Safety Is Our Top Priority</h1>
+            <a href="{{ route('contact') }}" class="bg-primary text-white uppercase text-sm font-semibold px-6 py-3">Request an Inspection</a>
         </div>
     </div>
 

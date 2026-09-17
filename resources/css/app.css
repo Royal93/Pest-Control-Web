@@ -64,6 +64,13 @@ a:active, button:active { transform: translateY(0); }
 @keyframes float-c { 0%{transform:translate(0,0) rotate(0deg) scale(1);} 50%{transform:translate(-10px,18px) rotate(6deg) scale(1.05);} 100%{transform:translate(0,0) rotate(0deg) scale(1);} }
 @keyframes float-d { 0%{transform:translate(0,0) rotate(0deg);} 50%{transform:translate(12px,-14px) rotate(-6deg);} 100%{transform:translate(0,0) rotate(0deg);} }
 
+@keyframes kenburns {
+  0%   { transform: scale(1) translate(0, 0); }
+  50%  { transform: scale(1.12) translate(-1.5%, -1%); }
+  100% { transform: scale(1) translate(0, 0); }
+}
+.kenburns { animation: kenburns 20s ease-in-out infinite; }
+
 .hero-animated .f-1  { top: 10%; left: 4%;   width: 56px; animation: float-a 9s infinite; }
 .hero-animated .f-2  { top: 60%; left: 9%;   width: 40px; animation: float-b 7s infinite; animation-delay: .5s; }
 .hero-animated .f-3  { top: 18%; left: 82%;  width: 66px; animation: float-c 11s infinite; animation-delay: 1s; }
@@ -87,6 +94,7 @@ a:active, button:active { transform: translateY(0); }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-animated .floating-pest { animation: none !important; }
+  .kenburns { animation: none !important; }
 }
 
 .hero-curve { position: absolute; bottom: -1px; left: 0; width: 100%; line-height: 0; }
