@@ -15,7 +15,7 @@
 
 <div x-data="{
         slide: 0,
-        total: 3,
+        total: 4,
         timer: null,
         start() { this.timer = setInterval(() => this.next(), 6000); },
         stop() { clearInterval(this.timer); },
@@ -72,6 +72,21 @@
         </div>
     </div>
 
+    {{-- Slide 4: real photo, shown in full (no crop) --}}
+    <div class="absolute inset-0 transition-all duration-500 ease-out bg-secondary"
+         :class="slide === 3 ? 'opacity-100 z-10 scale-100' : 'opacity-0 z-0 scale-105'">
+        <div class="h-full flex flex-col md:flex-row">
+            <div class="w-full md:w-2/5 flex flex-col justify-center px-7 md:px-12 py-8 order-2 md:order-1">
+                <p class="font-mono text-xs tracking-widest uppercase text-accent mb-3">SP Pest Control</p>
+                <h1 class="font-display uppercase text-2xl md:text-4xl text-white leading-tight mb-6">Your Family's Safety Is Our Top Priority</h1>
+                <a href="{{ route('contact') }}" class="self-start bg-primary text-white uppercase text-sm font-semibold px-6 py-3">Request an Inspection</a>
+            </div>
+            <div class="w-full md:w-3/5 flex-1 bg-bgAlt order-1 md:order-2 overflow-hidden">
+                <img src="{{ asset('images/carousel/slide-4.jpg') }}" alt="Happy family in front of their home, protected by SP Pest Control" class="w-full h-full object-contain">
+            </div>
+        </div>
+    </div>
+
     {{-- Arrows --}}
     <button @click="prev()" aria-label="Previous slide" class="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center text-xl">‹</button>
     <button @click="next()" aria-label="Next slide" class="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center text-xl">›</button>
@@ -81,6 +96,7 @@
         <button @click="go(0)" aria-label="Slide 1" :class="slide === 0 ? 'bg-white w-6' : 'bg-white/40 w-2.5'" class="h-2.5 rounded-full transition-all duration-200"></button>
         <button @click="go(1)" aria-label="Slide 2" :class="slide === 1 ? 'bg-white w-6' : 'bg-white/40 w-2.5'" class="h-2.5 rounded-full transition-all duration-200"></button>
         <button @click="go(2)" aria-label="Slide 3" :class="slide === 2 ? 'bg-white w-6' : 'bg-white/40 w-2.5'" class="h-2.5 rounded-full transition-all duration-200"></button>
+        <button @click="go(3)" aria-label="Slide 4" :class="slide === 3 ? 'bg-white w-6' : 'bg-white/40 w-2.5'" class="h-2.5 rounded-full transition-all duration-200"></button>
     </div>
 
     {{-- CTA, sits on top of every slide --}}
