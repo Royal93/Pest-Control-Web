@@ -1,20 +1,26 @@
-{{-- Hero carousel. Self-contained: own CSS, vanilla JS (no Alpine/Tailwind dependency).
-     Slides whose image file is missing are skipped automatically, so deleting an image can never blank the hero. --}}
+{{-- Hero carousel v2. Self-contained: own CSS, vanilla JS (no Alpine/Tailwind dependency).
+     - Shows the WHOLE photo (object-fit: contain) over a blurred copy of itself, so heads are never cropped.
+     - Auto-advances continuously (hovering no longer pauses it).
+     - Slides whose image file is missing are skipped automatically. --}}
 @php
     $requestUrl = url('/contact');          // primary button target  (change if your route differs)
     $plansUrl   = url('/protection-plans'); // secondary button target (change if your route differs)
 
     $all = [
-        ['image' => 'images/carousel/slide-1.jpg', 'tag' => 'Trusted in Kempton Park',
+        ['image' => 'images/carousel/slide-1.jpg', 'alt' => 'SP Pest Control technician treating a home',
+         'tag' => 'Trusted in Kempton Park',
          'before' => 'Pest-free homes,', 'accent' => 'guaranteed', 'after' => '',
          'text' => 'Scheduled treatments that stop infestations at the source, so pests stay gone.'],
-        ['image' => 'images/carousel/slide-2.jpg', 'tag' => 'Qualified technicians',
+        ['image' => 'images/carousel/slide-2.jpg', 'alt' => 'SP Pest Control technician speaking with a customer',
+         'tag' => 'Qualified technicians',
          'before' => 'Real experts.', 'accent' => 'Real', 'after' => 'results.',
          'text' => 'Friendly, uniformed professionals who inspect, explain and treat with care.'],
-        ['image' => 'images/carousel/slide-3.jpg', 'tag' => 'Safe for your family',
+        ['image' => 'images/carousel/slide-3.jpg', 'alt' => 'A family safe at home',
+         'tag' => 'Safe for your family',
          'before' => 'Kid and pet-safe', 'accent' => 'treatments', 'after' => '',
          'text' => 'Low-toxicity, targeted methods that protect your home without the worry.'],
-        ['image' => 'images/carousel/slide-4.jpg', 'tag' => 'Residential and commercial',
+        ['image' => 'images/carousel/slide-4.jpg', 'alt' => 'A happy family outside their home',
+         'tag' => 'Residential and commercial',
          'before' => 'Protection that', 'accent' => 'lasts', 'after' => '',
          'text' => 'Ongoing plans with monitoring visits and a 30-day ant-free guarantee.'],
     ];
@@ -32,7 +38,8 @@
     @foreach ($slides as $i => $s)
         <div class="spc-hero__slide {{ $i === 0 ? 'is-active' : '' }}" aria-hidden="{{ $i === 0 ? 'false' : 'true' }}">
             @if ($s['image'])
-                <div class="spc-hero__bg" style="background-image:url('{{ asset($s['image']) }}')"></div>
+                <div class="spc-hero__blur" style="background-image:url('{{ asset($s['image']) }}')"></div>
+                <img class="spc-hero__img" src="{{ asset($s['image']) }}" alt="{{ $s['alt'] }}" decoding="async">
             @endif
             <div class="spc-hero__shade"></div>
             <div class="spc-hero__content">
@@ -61,23 +68,30 @@
 </section>
 
 <style>
-    .spc-hero{position:relative;width:100%;height:clamp(460px,78vh,680px);background:#2b333b;overflow:hidden;color:#fff}
-    .spc-hero__slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .9s ease,visibility .9s}
+    /* All slides stack in one grid cell, so the hero is as tall as it needs to be. */
+    .spc-hero{position:relative;width:100%;display:grid;min-height:clamp(520px,82vh,720px);background:#2b333b;overflow:hidden;color:#fff}
+    .spc-hero__slide{grid-area:1/1;position:relative;display:flex;align-items:center;overflow:hidden;opacity:0;visibility:hidden;transition:opacity .9s ease,visibility .9s}
     .spc-hero__slide.is-active{opacity:1;visibility:visible;z-index:1}
-    .spc-hero__bg{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1);will-change:transform}
-    .spc-hero__slide.is-active .spc-hero__bg{animation:spcKen 9s ease-out forwards}
-    @keyframes spcKen{from{transform:scale(1)}to{transform:scale(1.09)}}
-    .spc-hero__shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,26,32,.88) 0%,rgba(20,26,32,.62) 45%,rgba(20,26,32,.15) 100%)}
-    .spc-hero__content{position:relative;z-index:2;height:100%;max-width:1200px;margin:0 auto;padding:0 24px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:18px}
+
+    /* Blurred copy of the photo fills any space the full photo doesn't cover. */
+    .spc-hero__blur{position:absolute;inset:-40px;background-size:cover;background-position:center;filter:blur(30px) brightness(.5)}
+
+    /* The full photo: never cropped. Sits to the right so the text has room on the left. */
+    .spc-hero__img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:right center;transform-origin:right center}
+    .spc-hero__slide.is-active .spc-hero__img{animation:spcKen 8s ease-out forwards}
+    @keyframes spcKen{from{transform:scale(1)}to{transform:scale(1.04)}}
+
+    .spc-hero__shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,26,32,.92) 0%,rgba(20,26,32,.78) 30%,rgba(20,26,32,.3) 52%,rgba(20,26,32,0) 68%)}
+    .spc-hero__content{position:relative;z-index:2;width:100%;max-width:1152px;margin:0 auto;padding:0 28px;display:flex;flex-direction:column;align-items:flex-start;gap:18px}
     .spc-hero__pill{display:inline-block;padding:6px 14px;border:1px solid rgba(255,255,255,.45);border-radius:999px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;background:rgba(255,255,255,.08)}
-    .spc-hero__title{margin:0;max-width:720px;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;line-height:1.05;font-size:clamp(34px,6vw,68px)}
+    .spc-hero__title{margin:0;max-width:600px;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;line-height:1.05;font-size:clamp(32px,5vw,60px);text-shadow:0 2px 12px rgba(0,0,0,.45)}
     .spc-hero__title em{font-style:normal;color:#d0703c}
-    .spc-hero__text{margin:0;max-width:560px;font-size:clamp(15px,1.6vw,19px);line-height:1.55;color:rgba(255,255,255,.88)}
+    .spc-hero__text{margin:0;max-width:520px;font-size:clamp(15px,1.5vw,18px);line-height:1.55;color:rgba(255,255,255,.9);text-shadow:0 1px 8px rgba(0,0,0,.45)}
     .spc-hero__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
     .spc-btn{display:inline-block;padding:14px 26px;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-radius:4px;transition:background .2s,color .2s,border-color .2s}
     .spc-btn--solid{background:#d0703c;color:#fff;border:2px solid #d0703c}
     .spc-btn--solid:hover{background:#b85d2d;border-color:#b85d2d}
-    .spc-btn--ghost{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.7)}
+    .spc-btn--ghost{background:rgba(20,26,32,.35);color:#fff;border:2px solid rgba(255,255,255,.7)}
     .spc-btn--ghost:hover{background:#fff;color:#2b333b}
     .spc-hero__nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:rgba(20,26,32,.4);color:#fff;font-size:28px;line-height:1;cursor:pointer}
     .spc-hero__nav:hover{background:#d0703c;border-color:#d0703c}
@@ -85,8 +99,18 @@
     .spc-hero__dots{position:absolute;left:0;right:0;bottom:22px;z-index:3;display:flex;justify-content:center;gap:10px}
     .spc-hero__dot{width:10px;height:10px;padding:0;border-radius:50%;border:0;background:rgba(255,255,255,.5);cursor:pointer}
     .spc-hero__dot.is-active{background:#d0703c;transform:scale(1.25)}
-    @media (max-width:640px){.spc-hero__nav{display:none}.spc-hero__shade{background:linear-gradient(180deg,rgba(20,26,32,.7),rgba(20,26,32,.85))}}
-    @media (prefers-reduced-motion:reduce){.spc-hero__slide.is-active .spc-hero__bg{animation:none}.spc-hero__slide{transition:none}}
+
+    /* Phones and small tablets: photo on top (whole picture), text underneath on dark. */
+    @media (max-width:820px){
+        .spc-hero{min-height:0}
+        .spc-hero__slide{flex-direction:column;align-items:stretch}
+        .spc-hero__blur,.spc-hero__shade{display:none}
+        .spc-hero__img{position:relative;inset:auto;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;object-position:center}
+        .spc-hero__content{padding:24px 24px 64px;gap:14px}
+        .spc-hero__title{max-width:none;font-size:clamp(28px,8vw,40px)}
+        .spc-hero__nav{display:none}
+    }
+    @media (prefers-reduced-motion:reduce){.spc-hero__slide.is-active .spc-hero__img{animation:none}.spc-hero__slide{transition:none}}
 </style>
 
 <script>
@@ -96,7 +120,7 @@
     var slides = hero.querySelectorAll('.spc-hero__slide');
     var dots = hero.querySelectorAll('.spc-hero__dot');
     if (slides.length < 2) return;
-    var current = 0, timer = null, DELAY = 6500;
+    var current = 0, timer = null, DELAY = 5500;
 
     function show(n) {
         current = (n + slides.length) % slides.length;
@@ -110,11 +134,12 @@
     function start() { stop(); timer = setInterval(function () { show(current + 1); }, DELAY); }
     function stop() { if (timer) { clearInterval(timer); timer = null; } }
 
+    // Manual controls move the slide, then autoplay carries on from there.
     hero.querySelector('.spc-hero__nav--prev').addEventListener('click', function () { show(current - 1); start(); });
     hero.querySelector('.spc-hero__nav--next').addEventListener('click', function () { show(current + 1); start(); });
     dots.forEach(function (d, i) { d.addEventListener('click', function () { show(i); start(); }); });
-    hero.addEventListener('mouseenter', stop);
-    hero.addEventListener('mouseleave', start);
+
+    // Only pause when the tab is hidden; hovering does NOT stop the slideshow.
     document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
     start();
 })();
