@@ -36,7 +36,7 @@ class ContactController extends Controller
             'source' => 'contact_form',
         ]);
 
-        Mail::to(config('mail.lead_notify_address', 'gorongaroyal@gmail.com'))
+        Mail::to(config('mail.lead_notify_address', 'admin@nomorepest.co.za'))
             ->send(new NewLeadNotification($lead));
 
         return back()->with('success', 'Request received. A technician will follow up shortly to confirm your inspection.');

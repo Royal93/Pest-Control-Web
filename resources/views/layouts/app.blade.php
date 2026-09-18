@@ -192,7 +192,7 @@
                     <div class="border-2 border-primary/40 bg-white/5 rounded-xl p-5">
                         <svg class="w-5 h-5 text-primary mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
                         <p class="font-mono text-xs uppercase tracking-widest text-primary mb-2">Email</p>
-                        <a href="mailto:info@nomorepest.co.za" class="text-white/70 text-sm hover:text-primary break-all">info@nomorepest.co.za</a>
+                        <a href="mailto:admin@nomorepest.co.za" class="text-white/70 text-sm hover:text-primary break-all">admin@nomorepest.co.za</a>
                     </div>
                     <div class="border-2 border-primary/40 bg-white/5 rounded-xl p-5">
                         <svg class="w-5 h-5 text-primary mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
