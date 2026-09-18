@@ -1,8 +1,8 @@
 {{-- Hero carousel v4. Self-contained: own CSS, vanilla JS (no Alpine/Tailwind dependency).
      - Soft light brand panel on the left; the whole photo sits on the right and its left edge fades into the panel.
-     - On each slide the logo badge starts large, then shrinks and fades while the photo grows over it.
+     - A very large logo stays fixed on the left (wide screens); the photo grows in beside it on each slide.
      - Auto-advances continuously (hovering does not pause it).
-     - Slides whose image file is missing are skipped; the badge is skipped if badge.png is missing.
+     - Slides whose image file is missing are skipped; the logo is skipped if badge.png is missing.
      To change the panel colours, edit the --spc-p1/p2/p3 values at the top of the <style> block. --}}
 @php
     $requestUrl = url('/contact');          // primary button target  (change if your route differs)
@@ -48,13 +48,13 @@
 @endphp
 
 <section class="spc-hero" id="spcHero" aria-roledescription="carousel" aria-label="Featured">
+    @if ($hasBadge)
+        <img class="spc-hero__logo" src="{{ asset('images/carousel/badge.png') }}" alt="SP Pest Control">
+    @endif
     @foreach ($slides as $i => $s)
         <div class="spc-hero__slide {{ $i === 0 ? 'is-active' : '' }}" aria-hidden="{{ $i === 0 ? 'false' : 'true' }}" style="--spc-r:{{ $s['ratio'] }}">
             @if ($s['image'])
                 <div class="spc-hero__photo">
-                    @if ($hasBadge)
-                        <img class="spc-hero__badge" src="{{ asset('images/carousel/badge.png') }}" alt="" aria-hidden="true">
-                    @endif
                     <div class="spc-hero__edge">
                         <div class="spc-hero__reveal">
                             <img class="spc-hero__img" src="{{ asset($s['image']) }}" alt="{{ $s['alt'] }}" decoding="async">
@@ -93,6 +93,7 @@
         --spc-ink:#2b333b; --spc-accent:#c8622c; --spc-accent-dark:#a04d1e;
         /* Soft brand panel (light peach, matching the logo's orange). */
         --spc-p1:#fff8f1; --spc-p2:#fcebdc; --spc-p3:#f6d9c3;
+        --spc-logo:clamp(260px,20vw,430px); --spc-logo-left:clamp(64px,4.5vw,110px);
         position:relative;width:100%;display:grid;
         height:clamp(460px,min(80vh,38vw),700px);
         background:linear-gradient(120deg,var(--spc-p1) 0%,var(--spc-p2) 50%,var(--spc-p3) 100%);
@@ -112,23 +113,17 @@
                 mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.05) 5%,rgba(0,0,0,.18) 11%,rgba(0,0,0,.42) 18%,rgba(0,0,0,.7) 26%,rgba(0,0,0,.92) 34%,#000 42%)}
     .spc-hero__img{position:absolute;top:0;right:0;display:block;height:100%;width:auto;aspect-ratio:var(--spc-r,1.5);object-fit:cover;transform-origin:right center}
 
-    /* Logo badge sits in the panel beside the photo's starting edge. As the photo grows over it,
-       it shrinks and fades. Resting state = hidden. */
-    .spc-hero__badge{position:absolute;top:50%;right:calc(56% + 18px);width:clamp(110px,10vw,210px);height:auto;
-        transform:translateY(-50%);transform-origin:right center;opacity:0;pointer-events:none;
-        filter:drop-shadow(0 10px 22px rgba(160,77,30,.28))}
-
-    /* Per-slide animation: photo grows leftwards while the badge shrinks and fades. */
+    /* Per-slide animation: the photo grows leftwards into place. */
     .spc-hero__slide.is-active .spc-hero__edge{animation:spcGrow 3.4s cubic-bezier(.22,.7,.2,1) both}
-    .spc-hero__slide.is-active .spc-hero__badge{animation:spcShrink 3.4s cubic-bezier(.22,.7,.2,1) both}
     .spc-hero__slide.is-active .spc-hero__img{animation:spcKen 9s ease-out both}
     @keyframes spcGrow{from{width:56%}to{width:100%}}
-    @keyframes spcShrink{
-        from{transform:translateY(-50%) scale(1);opacity:1}
-        35%{opacity:1}
-        to{transform:translateY(-50%) scale(.5);opacity:0}
-    }
     @keyframes spcKen{from{transform:scale(1)}to{transform:scale(1.03)}}
+
+    /* Very large fixed logo on the left (wide screens only, see media query below). */
+    .spc-hero__logo{display:none;position:absolute;z-index:2;top:50%;left:var(--spc-logo-left);width:var(--spc-logo);height:auto;
+        transform:translateY(-50%);pointer-events:none;
+        filter:drop-shadow(0 18px 40px rgba(160,77,30,.30));animation:spcLogoIn 1s cubic-bezier(.22,.7,.2,1) both}
+    @keyframes spcLogoIn{from{opacity:0;transform:translateY(-50%) scale(.85)}to{opacity:1;transform:translateY(-50%) scale(1)}}
 
     /* Soft panel-coloured wash behind the text, so it stays readable where the photo fades in. */
     .spc-hero__scrim{position:absolute;inset:0;pointer-events:none;
@@ -155,8 +150,12 @@
     .spc-hero__dot{width:10px;height:10px;padding:0;border-radius:50%;border:0;background:rgba(43,51,59,.28);cursor:pointer}
     .spc-hero__dot.is-active{background:var(--spc-accent);transform:scale(1.25)}
 
-    /* Narrow desktops: no room for the badge beside the text. */
-    @media (max-width:1180px){.spc-hero__badge{display:none}}
+    /* Wide screens: very large logo on the left, text beside it, photo on the right. */
+    @media (min-width:1500px){
+        .spc-hero__logo{display:block}
+        .spc-hero__content{max-width:none;margin:0;padding-left:calc(var(--spc-logo-left) + var(--spc-logo) + 56px);padding-right:28px}
+        .spc-hero__scrim{background:linear-gradient(90deg,rgba(255,248,241,.95) 0%,rgba(255,248,241,.9) 36%,rgba(255,248,241,.6) 50%,rgba(255,248,241,0) 68%)}
+    }
 
     /* Phones and small tablets: whole photo on top (fading into the panel below), text underneath. */
     @media (max-width:1000px){
@@ -172,7 +171,7 @@
         .spc-hero__nav{display:none}
     }
     @media (prefers-reduced-motion:reduce){
-        .spc-hero__slide.is-active .spc-hero__edge,.spc-hero__slide.is-active .spc-hero__badge,.spc-hero__slide.is-active .spc-hero__img{animation:none}
+        .spc-hero__slide.is-active .spc-hero__edge,.spc-hero__slide.is-active .spc-hero__img,.spc-hero__logo{animation:none}
         .spc-hero__slide,.spc-hero__content{transition:none}
     }
 </style>
