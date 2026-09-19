@@ -6,7 +6,7 @@
      To change the panel colours, edit the --spc-p1/p2/p3 values at the top of the <style> block. --}}
 @php
     $requestUrl = url('/contact');          // primary button target  (change if your route differs)
-    $plansUrl   = url('/protection-plans'); // secondary button target (change if your route differs)
+    $plansUrl   = url('/plans');            // secondary button target (your Protection Plans page)
 
     $all = [
         ['image' => 'images/carousel/slide-1.jpg', 'alt' => 'SP Pest Control technician treating a home',
@@ -109,8 +109,8 @@
     .spc-hero__photo{position:absolute;top:0;right:0;height:100%;aspect-ratio:var(--spc-r,1.5);max-width:100%}
     .spc-hero__edge{position:absolute;top:0;right:0;height:100%;width:100%}
     .spc-hero__reveal{position:absolute;inset:0;overflow:hidden;
-        -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.05) 5%,rgba(0,0,0,.18) 11%,rgba(0,0,0,.42) 18%,rgba(0,0,0,.7) 26%,rgba(0,0,0,.92) 34%,#000 42%);
-                mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.05) 5%,rgba(0,0,0,.18) 11%,rgba(0,0,0,.42) 18%,rgba(0,0,0,.7) 26%,rgba(0,0,0,.92) 34%,#000 42%)}
+        -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.1) 3%,rgba(0,0,0,.32) 7%,rgba(0,0,0,.62) 12%,rgba(0,0,0,.86) 17%,rgba(0,0,0,.97) 21%,#000 25%);
+                mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.1) 3%,rgba(0,0,0,.32) 7%,rgba(0,0,0,.62) 12%,rgba(0,0,0,.86) 17%,rgba(0,0,0,.97) 21%,#000 25%)}
     .spc-hero__img{position:absolute;top:0;right:0;display:block;height:100%;width:auto;aspect-ratio:var(--spc-r,1.5);object-fit:cover;transform-origin:right center}
 
     /* Per-slide animation: the photo grows leftwards into place. */
@@ -125,18 +125,18 @@
         filter:drop-shadow(0 18px 40px rgba(160,77,30,.30));animation:spcLogoIn 1s cubic-bezier(.22,.7,.2,1) both}
     @keyframes spcLogoIn{from{opacity:0;transform:translateY(-50%) scale(.85)}to{opacity:1;transform:translateY(-50%) scale(1)}}
 
-    /* Soft panel-coloured wash behind the text, so it stays readable where the photo fades in. */
+    /* Light panel-coloured wash at the far left only; the text carries its own soft glow. */
     .spc-hero__scrim{position:absolute;inset:0;pointer-events:none;
-        background:linear-gradient(90deg,rgba(255,248,241,.95) 0%,rgba(255,248,241,.86) 30%,rgba(255,248,241,.5) 46%,rgba(255,248,241,0) 60%)}
+        background:linear-gradient(90deg,rgba(255,248,241,.9) 0%,rgba(255,248,241,.7) 26%,rgba(255,248,241,.22) 40%,rgba(255,248,241,0) 50%)}
 
     /* Text: outgoing fades quickly, incoming waits a moment, so the two never overlap. */
     .spc-hero__content{position:relative;z-index:2;width:100%;max-width:1152px;margin:0 auto;padding:0 28px;display:flex;flex-direction:column;align-items:flex-start;gap:18px;
         opacity:0;transition:opacity .3s ease}
     .spc-hero__slide.is-active .spc-hero__content{opacity:1;transition:opacity .6s ease .45s}
     .spc-hero__pill{display:inline-block;padding:6px 14px;border:1px solid var(--spc-accent);border-radius:999px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--spc-accent-dark);background:rgba(200,98,44,.08)}
-    .spc-hero__title{margin:0;max-width:500px;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;line-height:1.05;font-size:clamp(32px,4.4vw,58px);color:var(--spc-ink)}
+    .spc-hero__title{margin:0;max-width:500px;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;line-height:1.05;font-size:clamp(32px,4.4vw,58px);color:var(--spc-ink);text-shadow:0 0 22px rgba(255,248,241,.9),0 0 8px rgba(255,248,241,.75)}
     .spc-hero__title em{font-style:normal;color:var(--spc-accent)}
-    .spc-hero__text{margin:0;max-width:440px;font-size:clamp(15px,1.5vw,18px);line-height:1.55;color:#4a5158}
+    .spc-hero__text{margin:0;max-width:440px;font-size:clamp(15px,1.5vw,18px);line-height:1.55;color:#3e454c;text-shadow:0 0 14px rgba(255,248,241,.95),0 0 5px rgba(255,248,241,.8)}
     .spc-hero__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
     .spc-btn{display:inline-block;padding:14px 26px;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-radius:4px;transition:background .2s,color .2s,border-color .2s}
     .spc-btn--solid{background:var(--spc-accent);color:#fff;border:2px solid var(--spc-accent)}
@@ -154,7 +154,7 @@
     @media (min-width:1500px){
         .spc-hero__logo{display:block}
         .spc-hero__content{max-width:none;margin:0;padding-left:calc(var(--spc-logo-left) + var(--spc-logo) + 56px);padding-right:28px}
-        .spc-hero__scrim{background:linear-gradient(90deg,rgba(255,248,241,.95) 0%,rgba(255,248,241,.9) 36%,rgba(255,248,241,.6) 50%,rgba(255,248,241,0) 68%)}
+        .spc-hero__scrim{background:linear-gradient(90deg,rgba(255,248,241,.9) 0%,rgba(255,248,241,.75) 30%,rgba(255,248,241,.2) 42%,rgba(255,248,241,0) 52%)}
     }
 
     /* Phones and small tablets: whole photo on top (fading into the panel below), text underneath. */
