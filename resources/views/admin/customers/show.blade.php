@@ -34,6 +34,57 @@
     </div>
 </form>
 
+{{-- ============ INVOICES ============ --}}
+<div class="max-w-3xl border-2 border-line rounded-xl bg-white p-6 mb-6">
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <h2 class="font-display uppercase text-lg">Invoices</h2>
+        <a href="{{ route('admin.invoices.create', ['customer' => $customer->id]) }}"
+           class="border-2 border-primary bg-primary text-white uppercase text-sm font-semibold px-5 py-2 rounded-lg">
+            Upload Invoice
+        </a>
+    </div>
+
+    <table class="w-full text-sm">
+        <thead class="text-left uppercase text-xs text-inkFaint">
+            <tr>
+                <th class="py-2">Invoice</th>
+                <th class="py-2">Date</th>
+                <th class="py-2">Amount</th>
+                <th class="py-2">Status</th>
+                <th class="py-2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($invoices as $invoice)
+                <tr class="border-t border-line">
+                    <td class="py-2">
+                        {{ $invoice->displayNumber() }}
+                        @if ($invoice->description)
+                            <span class="block text-xs text-inkFaint">{{ $invoice->description }}</span>
+                        @endif
+                    </td>
+                    <td class="py-2">{{ $invoice->issued_at?->format('d M Y') }}</td>
+                    <td class="py-2">R{{ number_format($invoice->amount, 2) }}</td>
+                    <td class="py-2 {{ $invoice->status === 'paid' ? 'text-accentDark' : 'text-primary' }} font-semibold">
+                        {{ ucfirst($invoice->status) }}
+                    </td>
+                    <td class="py-2 text-right whitespace-nowrap">
+                        <a href="{{ route('admin.invoices.download', $invoice) }}" class="text-primary font-semibold">Download</a>
+                        <form method="POST" action="{{ route('admin.invoices.destroy', $invoice) }}" class="inline ml-3"
+                              onsubmit="return confirm('Remove this invoice? The customer will no longer see it.');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-600 font-semibold">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            @empty
+                <tr><td colspan="5" class="py-4 text-inkFaint">No invoices uploaded for this customer yet.</td></tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
+
 <form method="POST" action="{{ route('admin.customers.destroy', $customer) }}"
       onsubmit="return confirm('Remove this customer? This cannot be undone.');">
     @csrf

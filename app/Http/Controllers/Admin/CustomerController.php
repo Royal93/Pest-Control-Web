@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User; // NOTE: adjust this if your customer portal model has a different name/namespace
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CustomerController extends Controller
 {
@@ -27,7 +28,13 @@ class CustomerController extends Controller
         // If a Payment model with a `payable`/user relationship exists by
         // the time this is wired up, pull the customer's payment history
         // here too, e.g.: $customer->load('payments');
-        return view('admin.customers.show', compact('customer'));
+        $invoices = $customer->invoices()
+            ->whereNotNull('file_path')
+            ->latest('issued_at')
+            ->latest('id')
+            ->get();
+
+        return view('admin.customers.show', compact('customer', 'invoices'));
     }
 
     public function update(Request $request, User $customer)
@@ -44,6 +51,9 @@ class CustomerController extends Controller
 
     public function destroy(User $customer)
     {
+        // Their invoice records are deleted with the customer, so remove the uploaded files too.
+        Storage::disk('local')->deleteDirectory('invoices/'.$customer->id);
+
         $customer->delete();
         return redirect()->route('admin.customers.index')->with('status', 'Customer removed.');
     }

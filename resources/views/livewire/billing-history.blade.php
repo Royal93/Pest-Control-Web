@@ -4,6 +4,7 @@
         <thead>
             <tr class="text-left font-mono text-xs uppercase text-inkFaint border-b-2 border-line">
                 <th class="py-2">Date</th>
+                <th class="py-2">Invoice</th>
                 <th class="py-2">Amount</th>
                 <th class="py-2">Status</th>
                 <th class="py-2"></th>
@@ -13,6 +14,12 @@
             @forelse ($invoices as $invoice)
                 <tr class="border-b-2 border-line">
                     <td class="py-2">{{ $invoice->issued_at?->format('Y-m-d') }}</td>
+                    <td class="py-2 text-inkMuted">
+                        {{ $invoice->displayNumber() }}
+                        @if ($invoice->description)
+                            <span class="block text-xs text-inkFaint">{{ $invoice->description }}</span>
+                        @endif
+                    </td>
                     <td class="py-2 text-inkMuted">R{{ number_format($invoice->amount, 2) }}</td>
                     <td class="py-2 text-inkMuted">{{ ucfirst($invoice->status) }}</td>
                     <td class="py-2 text-right">
@@ -20,7 +27,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="4" class="py-3 text-inkFaint">No billing history yet.</td></tr>
+                <tr><td colspan="5" class="py-3 text-inkFaint">No billing history yet.</td></tr>
             @endforelse
         </tbody>
     </table>
