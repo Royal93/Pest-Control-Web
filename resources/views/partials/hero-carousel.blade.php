@@ -10,7 +10,7 @@
 
     $all = [
         ['image' => 'images/carousel/slide-1.jpg', 'alt' => 'SP Pest Control technician treating a home',
-         'tag' => 'Trusted in Kempton Park',
+         'tag' => 'Trusted Across South Africa',
          'before' => 'Pest-free homes,', 'accent' => 'guaranteed', 'after' => '',
          'text' => 'Scheduled treatments that stop infestations at the source, so pests stay gone.'],
         ['image' => 'images/carousel/slide-2.jpg', 'alt' => 'SP Pest Control technician speaking with a customer',
