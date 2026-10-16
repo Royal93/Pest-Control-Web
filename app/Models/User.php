@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'surname', 'email', 'phone', 'password'])]
+#[Fillable(['name', 'surname', 'email', 'phone', 'password', 'role'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -43,5 +43,21 @@ class User extends Authenticatable
     public function invoices()
     {
         return $this->hasMany(\App\Models\Invoice::class);
+    }
+
+    /** Leads this user has captured out in the field (only meaningful for role = marketing). */
+    public function capturedLeads()
+    {
+        return $this->hasMany(\App\Models\Lead::class, 'captured_by');
+    }
+
+    public function isMarketing(): bool
+    {
+        return $this->role === 'marketing';
+    }
+
+    public function isCustomer(): bool
+    {
+        return $this->role === 'customer' || $this->role === null;
     }
 }

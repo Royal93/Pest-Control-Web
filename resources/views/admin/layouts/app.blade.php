@@ -16,6 +16,8 @@
             <a href="{{ route('admin.plans.index') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('admin.plans.*') ? 'bg-white/10 font-semibold' : '' }}">Plans &amp; Pricing</a>
             <a href="{{ route('admin.customers.index') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('admin.customers.*') ? 'bg-white/10 font-semibold' : '' }}">Customers</a>
             <a href="{{ route('admin.invoices.index') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('admin.invoices.*') ? 'bg-white/10 font-semibold' : '' }}">Invoices</a>
+            <a href="{{ route('admin.marketing.index') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('admin.marketing.*') ? 'bg-white/10 font-semibold' : '' }}">Marketing Team</a>
+            <a href="{{ route('admin.leads.index') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('admin.leads.*') ? 'bg-white/10 font-semibold' : '' }}">Leads</a>
         </nav>
         <form method="POST" action="{{ route('admin.logout') }}" class="mt-10">
             @csrf
@@ -27,6 +29,11 @@
         @if (session('status'))
             <div class="mb-6 border-2 border-accent bg-accent/10 text-ink px-4 py-3 rounded-lg text-sm">
                 {{ session('status') }}
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="mb-6 border-2 border-red-500 bg-red-50 text-ink px-4 py-3 rounded-lg text-sm">
+                {{ session('error') }}
             </div>
         @endif
 

@@ -28,7 +28,14 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('portal.index', absolute: false));
+        // One login form, two destinations: marketing/sales reps land on their
+        // own dashboard, everyone else (ordinary customers) on the customer
+        // portal, same as before this role existed.
+        $destination = $request->user()->role === 'marketing'
+            ? route('marketing.dashboard', absolute: false)
+            : route('portal.index', absolute: false);
+
+        return redirect()->intended($destination);
     }
 
     /**

@@ -30,11 +30,17 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/portal', [PortalController::class, 'index'])->name('portal.index');
+    // role:customer keeps marketing/sales reps (same login table, different
+    // role) out of the customer portal — they're sent to their own dashboard
+    // instead by the 'role' middleware. Ordinary customers are unaffected.
+    Route::middleware('role:customer')->group(function () {
+        Route::get('/portal', [PortalController::class, 'index'])->name('portal.index');
 
-    Route::get('/portal/service-visits/{serviceVisit}/report', [ServiceReportController::class, 'download'])->name('portal.service-visit.report');
-    Route::get('/portal/invoices/{invoice}/download', [InvoiceController::class, 'download'])->name('portal.invoice.download');
+        Route::get('/portal/service-visits/{serviceVisit}/report', [ServiceReportController::class, 'download'])->name('portal.service-visit.report');
+        Route::get('/portal/invoices/{invoice}/download', [InvoiceController::class, 'download'])->name('portal.invoice.download');
+    });
 });
 
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
+require __DIR__.'/marketing.php';
