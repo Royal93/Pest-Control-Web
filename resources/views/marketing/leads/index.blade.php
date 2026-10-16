@@ -43,7 +43,9 @@
                     <td class="px-5 py-3">{{ $lead->phone }}</td>
                     <td class="px-5 py-3">{{ $lead->suburb ?: '—' }}</td>
                     <td class="px-5 py-3">{{ $lead->pest_type ?: '—' }}</td>
-                    <td class="px-5 py-3">{{ $lead->statusLabel() }}</td>
+                    <td class="px-5 py-3">
+                        <span class="text-xs font-semibold px-2 py-1 rounded-full {{ $lead->statusBadgeClasses() }}">{{ $lead->statusLabel() }}</span>
+                    </td>
                     <td class="px-5 py-3 {{ $lead->next_follow_up_date && $lead->next_follow_up_date->isPast() && !in_array($lead->status, ['converted', 'not_interested']) ? 'text-primary font-semibold' : '' }}">
                         {{ $lead->next_follow_up_date?->format('d M Y') ?: '—' }}
                     </td>

@@ -21,4 +21,8 @@ Route::prefix('marketing')->name('marketing.')->middleware(['auth', 'role:market
     Route::post('/leads', [LeadController::class, 'store'])->name('leads.store');
     Route::get('/leads/{lead}/edit', [LeadController::class, 'edit'])->name('leads.edit');
     Route::put('/leads/{lead}', [LeadController::class, 'update'])->name('leads.update');
+
+    Route::post('/leads/{lead}/documents', [LeadController::class, 'storeDocument'])->name('leads.documents.store');
+    Route::get('/leads/{lead}/documents/{document}/download', [LeadController::class, 'downloadDocument'])->name('leads.documents.download');
+    Route::delete('/leads/{lead}/documents/{document}', [LeadController::class, 'destroyDocument'])->name('leads.documents.destroy');
 });

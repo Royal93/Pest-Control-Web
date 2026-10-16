@@ -27,7 +27,9 @@
                     <td class="px-5 py-3">{{ $lead->phone }}</td>
                     <td class="px-5 py-3">{{ $lead->suburb ?: '—' }}</td>
                     <td class="px-5 py-3">{{ $lead->pest_type ?: '—' }}</td>
-                    <td class="px-5 py-3">{{ $lead->statusLabel() }}</td>
+                    <td class="px-5 py-3">
+                        <span class="text-xs font-semibold px-2 py-1 rounded-full {{ $lead->statusBadgeClasses() }}">{{ $lead->statusLabel() }}</span>
+                    </td>
                     <td class="px-5 py-3">{{ $lead->created_at->format('d M Y') }}</td>
                 </tr>
             @empty

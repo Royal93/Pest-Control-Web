@@ -54,6 +54,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/leads', [LeadController::class, 'index'])->name('leads.index');
         Route::get('/leads/{lead}', [LeadController::class, 'show'])->name('leads.show');
+        Route::patch('/leads/{lead}/status', [LeadController::class, 'updateStatus'])->name('leads.updateStatus');
+        Route::get('/leads/{lead}/documents/{document}/download', [LeadController::class, 'downloadDocument'])->name('leads.documents.download');
 
         Route::get('/admins', [AdminManagementController::class, 'index'])->name('admins.index');
         Route::get('/admins/create', [AdminManagementController::class, 'create'])->name('admins.create');
