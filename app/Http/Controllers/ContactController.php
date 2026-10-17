@@ -24,7 +24,9 @@ class ContactController extends Controller
             'email' => 'required|email:rfc|max:255',
             'property_type' => 'nullable|string|max:100',
             'service' => 'nullable|string|max:100',
-            'message' => 'nullable|string|max:2000',
+            'message' => 'required|string|max:2000',
+        ], [
+            'message.required' => 'Please tell us a bit about what\'s going on, so we can help.',
         ]);
 
         $lead = Lead::create([
@@ -33,7 +35,7 @@ class ContactController extends Controller
             'phone' => $validated['phone'],
             'property_type' => $validated['property_type'] ?? null,
             'service_interest' => $validated['service'] ?? null,
-            'message' => $validated['message'] ?? null,
+            'message' => $validated['message'],
             'source' => 'contact_form',
         ]);
 
