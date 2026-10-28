@@ -17,6 +17,14 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin.auth' => \App\Http\Middleware\EnsureAdminIsAuthenticated::class,
             'role' => \App\Http\Middleware\EnsureUserHasRole::class,
         ]);
+
+        // Netcash posts these from its own servers / the customer's browser, without a CSRF token.
+        $middleware->validateCsrfTokens(except: [
+            'payments/notify',
+            'payments/accept',
+            'payments/decline',
+            'payments/redirect',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

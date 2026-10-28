@@ -12,11 +12,12 @@ class DashboardController extends Controller
     {
         $repId = Auth::id();
 
-        $base = Lead::where('captured_by', $repId);
+        // Admin captures and assigns leads; a rep's dashboard is the leads assigned to them.
+        $base = Lead::where('assigned_to', $repId);
 
         $stats = [
             'total' => (clone $base)->count(),
-            'this_week' => (clone $base)->where('created_at', '>=', now()->startOfWeek())->count(),
+            'this_week' => (clone $base)->where('assigned_at', '>=', now()->startOfWeek())->count(),
             'converted' => (clone $base)->where('status', 'converted')->count(),
             'follow_ups_due' => (clone $base)->whereNotNull('next_follow_up_date')
                 ->whereDate('next_follow_up_date', '<=', now()->toDateString())
@@ -24,7 +25,7 @@ class DashboardController extends Controller
                 ->count(),
         ];
 
-        $recentLeads = (clone $base)->latest()->limit(8)->get();
+        $recentLeads = (clone $base)->latest('assigned_at')->latest()->limit(8)->get();
 
         return view('marketing.dashboard', compact('stats', 'recentLeads'));
     }

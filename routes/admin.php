@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\LeadController;
 use App\Http\Controllers\Admin\MarketingController;
 use App\Http\Controllers\Admin\PlanController;
+use App\Http\Controllers\Admin\SaleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,18 +45,33 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/invoices/{invoice}/download', [InvoiceController::class, 'download'])->name('invoices.download');
         Route::delete('/invoices/{invoice}', [InvoiceController::class, 'destroy'])->name('invoices.destroy');
 
-        // The marketing/sales team: accounts admin creates (role=marketing on
-        // the same users table customers use), and the leads they capture.
-        Route::get('/marketing', [MarketingController::class, 'index'])->name('marketing.index');
-        Route::get('/marketing/create', [MarketingController::class, 'create'])->name('marketing.create');
-        Route::post('/marketing', [MarketingController::class, 'store'])->name('marketing.store');
-        Route::get('/marketing/{rep}', [MarketingController::class, 'show'])->name('marketing.show');
-        Route::delete('/marketing/{rep}', [MarketingController::class, 'destroy'])->name('marketing.destroy');
+        // The Sales Team: accounts admin creates (role=marketing on the same
+        // users table customers use). Route names kept as admin.marketing.*.
+        Route::get('/sales-team', [MarketingController::class, 'index'])->name('marketing.index');
+        Route::get('/sales-team/create', [MarketingController::class, 'create'])->name('marketing.create');
+        Route::post('/sales-team', [MarketingController::class, 'store'])->name('marketing.store');
+        Route::get('/sales-team/{rep}', [MarketingController::class, 'show'])->name('marketing.show');
+        Route::delete('/sales-team/{rep}', [MarketingController::class, 'destroy'])->name('marketing.destroy');
+        Route::redirect('/marketing', '/admin/sales-team');
 
+        // Leads: only admin captures leads, and assigns each one to a sales rep.
         Route::get('/leads', [LeadController::class, 'index'])->name('leads.index');
+        Route::get('/leads/create', [LeadController::class, 'create'])->name('leads.create');
+        Route::post('/leads', [LeadController::class, 'store'])->name('leads.store');
         Route::get('/leads/{lead}', [LeadController::class, 'show'])->name('leads.show');
+        Route::patch('/leads/{lead}/assign', [LeadController::class, 'assign'])->name('leads.assign');
         Route::patch('/leads/{lead}/status', [LeadController::class, 'updateStatus'])->name('leads.updateStatus');
         Route::get('/leads/{lead}/documents/{document}/download', [LeadController::class, 'downloadDocument'])->name('leads.documents.download');
+
+        // Sales: Capture a Sale -> service agreement -> acceptance -> payment.
+        Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
+        Route::get('/sales/create', [SaleController::class, 'create'])->name('sales.create');
+        Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
+        Route::get('/sales/{sale}', [SaleController::class, 'show'])->name('sales.show');
+        Route::get('/sales/{sale}/agreement', [SaleController::class, 'download'])->name('sales.download');
+        Route::post('/sales/{sale}/resend', [SaleController::class, 'resend'])->name('sales.resend');
+        Route::post('/sales/{sale}/mark-paid', [SaleController::class, 'markPaid'])->name('sales.markPaid');
+        Route::post('/sales/{sale}/cancel', [SaleController::class, 'cancel'])->name('sales.cancel');
 
         Route::get('/admins', [AdminManagementController::class, 'index'])->name('admins.index');
         Route::get('/admins/create', [AdminManagementController::class, 'create'])->name('admins.create');

@@ -3,7 +3,20 @@
 @section('title', 'Leads')
 
 @section('content')
-<h1 class="font-display uppercase text-2xl mb-6">Leads</h1>
+<div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+    <h1 class="font-display uppercase text-2xl">Leads</h1>
+    <a href="{{ route('admin.leads.create') }}"
+       class="border-2 border-primary bg-primary text-white uppercase text-sm font-semibold px-6 py-2 rounded-lg">
+        Capture Lead
+    </a>
+</div>
+
+@if ($unassignedCount > 0 && request('rep') !== 'unassigned')
+    <div class="mb-5 border-2 border-primary bg-primary/10 rounded-lg px-4 py-3 text-sm flex flex-wrap items-center justify-between gap-2">
+        <span><strong>{{ $unassignedCount }}</strong> {{ $unassignedCount === 1 ? 'lead is' : 'leads are' }} not assigned to a sales rep yet.</span>
+        <a href="{{ route('admin.leads.index', ['rep' => 'unassigned']) }}" class="text-primary font-semibold">Show unassigned</a>
+    </div>
+@endif
 
 <div class="flex gap-2 mb-5 border-b-2 border-line">
     @foreach ([
@@ -22,11 +35,18 @@
     <input type="hidden" name="tab" value="{{ $tab }}">
     <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name, phone or email…"
            class="border-2 border-line rounded-lg px-3 py-2 text-sm w-full max-w-xs">
+    <select name="rep" class="border-2 border-line rounded-lg px-3 py-2 text-sm bg-white" onchange="this.form.submit()">
+        <option value="">All sales reps</option>
+        <option value="unassigned" @selected(request('rep') === 'unassigned')>Unassigned</option>
+        @foreach ($reps as $rep)
+            <option value="{{ $rep->id }}" @selected((string) request('rep') === (string) $rep->id)>{{ $rep->fullName() }}</option>
+        @endforeach
+    </select>
     <select name="source" class="border-2 border-line rounded-lg px-3 py-2 text-sm bg-white" onchange="this.form.submit()">
         <option value="">All sources</option>
-        <option value="contact_form" @selected(request('source') === 'contact_form')>Contact form</option>
-        <option value="chatbot" @selected(request('source') === 'chatbot')>Chatbot</option>
-        <option value="field_rep" @selected(request('source') === 'field_rep')>Field rep</option>
+        @foreach (\App\Models\Lead::SOURCES as $key => $label)
+            <option value="{{ $key }}" @selected(request('source') === $key)>{{ $label }}</option>
+        @endforeach
     </select>
     @if ($tab === 'in_progress')
         <select name="status" class="border-2 border-line rounded-lg px-3 py-2 text-sm bg-white" onchange="this.form.submit()">
@@ -39,14 +59,14 @@
     <button type="submit" class="border-2 border-line rounded-lg px-4 py-2 text-sm font-semibold">Filter</button>
 </form>
 
-<div class="border-2 border-line rounded-xl bg-white overflow-hidden">
+<div class="border-2 border-line rounded-xl bg-white overflow-x-auto">
     <table class="w-full text-sm">
         <thead class="bg-bgAlt text-left uppercase text-xs text-inkFaint">
             <tr>
                 <th class="px-5 py-3">Name</th>
                 <th class="px-5 py-3">Phone</th>
                 <th class="px-5 py-3">Source</th>
-                <th class="px-5 py-3">Captured By</th>
+                <th class="px-5 py-3">Assigned To</th>
                 <th class="px-5 py-3">Status</th>
                 @if ($tab === 'converted')
                     <th class="px-5 py-3">Account</th>
@@ -61,9 +81,21 @@
                     <td class="px-5 py-3 font-semibold">
                         <a href="{{ route('admin.leads.show', $lead) }}" class="hover:text-primary">{{ $lead->name }}</a>
                     </td>
-                    <td class="px-5 py-3">{{ $lead->phone ?: '—' }}</td>
-                    <td class="px-5 py-3">{{ ucfirst(str_replace('_', ' ', $lead->source)) }}</td>
-                    <td class="px-5 py-3">{{ $lead->capturedBy?->name ? $lead->capturedBy->name.' '.$lead->capturedBy->surname : '—' }}</td>
+                    <td class="px-5 py-3 whitespace-nowrap">{{ $lead->phone ?: '—' }}</td>
+                    <td class="px-5 py-3">{{ $lead->sourceLabel() }}</td>
+                    <td class="px-5 py-3">
+                        <form method="POST" action="{{ route('admin.leads.assign', $lead) }}">
+                            @csrf
+                            @method('PATCH')
+                            <select name="assigned_to" onchange="this.form.submit()"
+                                    class="text-xs border-2 rounded-lg px-2 py-1 bg-white {{ $lead->assigned_to ? 'border-line' : 'border-primary text-primary font-semibold' }}">
+                                <option value="">Unassigned</option>
+                                @foreach ($reps as $rep)
+                                    <option value="{{ $rep->id }}" @selected((int) $lead->assigned_to === (int) $rep->id)>{{ $rep->fullName() }}</option>
+                                @endforeach
+                            </select>
+                        </form>
+                    </td>
                     <td class="px-5 py-3">
                         <form method="POST" action="{{ route('admin.leads.updateStatus', $lead) }}" class="flex items-center gap-2">
                             @csrf
@@ -85,8 +117,8 @@
                             @endif
                         </td>
                     @endif
-                    <td class="px-5 py-3">{{ $lead->created_at->format('d M Y') }}</td>
-                    <td class="px-5 py-3 text-right">
+                    <td class="px-5 py-3 whitespace-nowrap">{{ $lead->created_at->format('d M Y') }}</td>
+                    <td class="px-5 py-3 text-right whitespace-nowrap">
                         <a href="{{ route('admin.leads.show', $lead) }}" class="text-primary font-semibold">View</a>
                     </td>
                 </tr>

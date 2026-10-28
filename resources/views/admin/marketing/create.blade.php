@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Add Marketing Team Member')
+@section('title', 'Add Sales Team Member')
 
 @section('content')
-<h1 class="font-display uppercase text-2xl mb-6">Add Marketing Team Member</h1>
+<h1 class="font-display uppercase text-2xl mb-6">Add Sales Team Member</h1>
 
 @if ($errors->any())
     <div class="mb-6 max-w-xl border-2 border-red-500 bg-red-50 text-ink px-4 py-3 rounded-lg text-sm">
@@ -59,7 +59,7 @@
 
     <p class="text-xs text-inkFaint">
         Give this email and password to the new team member yourself. They'll log in at the normal
-        customer login page and be taken straight to their marketing dashboard.
+        customer login page and be taken straight to their SP SALES dashboard.
     </p>
 
     <div class="flex gap-3 mt-2">

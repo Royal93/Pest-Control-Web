@@ -9,6 +9,8 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PortalController;
 use App\Http\Controllers\ServiceReportController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\AgreementController;
+use App\Http\Controllers\WelcomePasswordController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -24,6 +26,19 @@ Route::get('/terms', fn () => view('terms'))->name('terms');
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+// Service agreements: the customer's private link from their email (no login needed).
+Route::prefix('agreement/{token}')->name('agreements.')->group(function () {
+    Route::get('/', [AgreementController::class, 'show'])->name('show');
+    Route::post('/accept', [AgreementController::class, 'accept'])->middleware('throttle:10,1')->name('accept');
+    Route::get('/pay', [AgreementController::class, 'pay'])->name('pay');
+    Route::post('/checkout', [AgreementController::class, 'checkout'])->middleware('throttle:10,1')->name('checkout');
+    Route::get('/download', [AgreementController::class, 'download'])->name('download');
+});
+
+// New customers set their password from the welcome email (signed link, 7 days).
+Route::get('/welcome/{user}/set-password', [WelcomePasswordController::class, 'show'])->name('welcome.password');
+Route::post('/welcome/{user}/set-password', [WelcomePasswordController::class, 'store'])->middleware('throttle:10,1')->name('welcome.password.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -44,3 +59,4 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
 require __DIR__.'/marketing.php';
+require __DIR__.'/payments.php';

@@ -27,8 +27,49 @@
         <div><dt class="text-xs uppercase text-inkFaint">Pest problem</dt><dd>{{ $lead->pest_type ?: '—' }}</dd></div>
         <div><dt class="text-xs uppercase text-inkFaint">Interested plan</dt><dd>{{ $lead->service_interest ?: '—' }}</dd></div>
         <div><dt class="text-xs uppercase text-inkFaint">Heard about us via</dt><dd>{{ $lead->referral_channel ? ucfirst(str_replace('_', ' ', $lead->referral_channel)) : '—' }}</dd></div>
-        <div><dt class="text-xs uppercase text-inkFaint">Captured</dt><dd>{{ $lead->created_at->format('d M Y') }}</dd></div>
+        <div><dt class="text-xs uppercase text-inkFaint">Assigned to you</dt><dd>{{ ($lead->assigned_at ?? $lead->created_at)->format('d M Y') }}</dd></div>
     </dl>
+
+    @if ($lead->message)
+        <div class="mt-4 text-sm">
+            <dt class="text-xs uppercase text-inkFaint">What they need</dt>
+            <dd class="whitespace-pre-line">{{ $lead->message }}</dd>
+        </div>
+    @endif
+</div>
+
+<div class="max-w-2xl border-2 border-primary rounded-xl bg-white p-6 mb-6">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+            <h2 class="font-display uppercase text-sm">Capture a Sale</h2>
+            <p class="text-xs text-inkFaint mt-1">Customer agreed? Complete the sale questionnaire and their service agreement is emailed to them to accept and pay online.</p>
+        </div>
+        @unless ($lead->status === 'converted')
+            <a href="{{ route('marketing.sales.create', ['lead' => $lead->id]) }}"
+               class="border-2 border-primary bg-primary text-white uppercase text-sm font-semibold px-5 py-2 rounded-lg whitespace-nowrap">
+                Capture a Sale
+            </a>
+        @endunless
+    </div>
+
+    @if ($lead->sales->isNotEmpty())
+        <table class="w-full text-sm mt-4">
+            <tbody>
+                @foreach ($lead->sales as $sale)
+                    <tr class="border-t border-line">
+                        <td class="py-2 font-semibold">{{ $sale->reference() }}</td>
+                        <td class="py-2">{{ $sale->serviceLabel() }}</td>
+                        <td class="py-2"><span class="text-xs font-semibold px-2 py-1 rounded-full {{ $sale->statusBadgeClasses() }}">{{ $sale->statusLabel() }}</span></td>
+                        <td class="py-2 text-right">
+                            @if ((int) $sale->sales_rep_id === (int) auth()->id())
+                                <a href="{{ route('marketing.sales.show', $sale) }}" class="text-primary font-semibold">View</a>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
 </div>
 
 <form method="POST" action="{{ route('marketing.leads.update', $lead) }}"

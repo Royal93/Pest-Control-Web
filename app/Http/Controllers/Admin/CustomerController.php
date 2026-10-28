@@ -3,18 +3,24 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User; // NOTE: adjust this if your customer portal model has a different name/namespace
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Signed-up customers only. Sales reps (Sales Team page) and admins (Admins
+ * page) share the users table but never appear or can be edited here.
+ */
 class CustomerController extends Controller
 {
     public function index(Request $request)
     {
-        $customers = User::query()
+        $customers = User::customers()
             ->when($request->filled('search'), function ($query) use ($request) {
                 $term = "%{$request->input('search')}%";
-                $query->where(fn ($q) => $q->where('name', 'like', $term)->orWhere('email', 'like', $term));
+                $query->where(fn ($q) => $q->where('name', 'like', $term)
+                    ->orWhere('surname', 'like', $term)
+                    ->orWhere('email', 'like', $term));
             })
             ->latest()
             ->paginate(20)
@@ -25,9 +31,8 @@ class CustomerController extends Controller
 
     public function show(User $customer)
     {
-        // If a Payment model with a `payable`/user relationship exists by
-        // the time this is wired up, pull the customer's payment history
-        // here too, e.g.: $customer->load('payments');
+        $this->ensureCustomer($customer);
+
         $invoices = $customer->invoices()
             ->whereNotNull('file_path')
             ->latest('issued_at')
@@ -39,6 +44,8 @@ class CustomerController extends Controller
 
     public function update(Request $request, User $customer)
     {
+        $this->ensureCustomer($customer);
+
         $validated = $request->validate([
             'name' => 'required|string|max:100',
             'email' => 'required|email|max:150|unique:users,email,' . $customer->id,
@@ -51,10 +58,17 @@ class CustomerController extends Controller
 
     public function destroy(User $customer)
     {
+        $this->ensureCustomer($customer);
+
         // Their invoice records are deleted with the customer, so remove the uploaded files too.
         Storage::disk('local')->deleteDirectory('invoices/'.$customer->id);
 
         $customer->delete();
         return redirect()->route('admin.customers.index')->with('status', 'Customer removed.');
+    }
+
+    private function ensureCustomer(User $user): void
+    {
+        abort_unless(User::customers()->whereKey($user->id)->exists(), 404);
     }
 }

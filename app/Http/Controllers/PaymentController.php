@@ -107,9 +107,21 @@ class PaymentController extends Controller
             'cc_expiry'      => $request->input('ccExpiry'),
         ]);
 
-        // TODO once payable models exist: if ($accepted && $payment->payable) {
-        //     $payment->payable->markPaid($payment);
-        // }
+        // A service agreement's first payment: activate the customer and their plan.
+        // The amount Netcash reports must match what we asked for before anything is activated.
+        $amountMatches = abs((float) $request->input('Amount') - (float) $payment->amount) < 0.01;
+
+        if ($accepted && $amountMatches && $payment->payable_type === \App\Models\Sale::class && $payment->payable) {
+            try {
+                app(\App\Services\SaleAgreementService::class)->markPaid($payment->payable, $payment);
+            } catch (\Throwable $e) {
+                // Still answer 200 so Netcash doesn't retry forever; the payment row is saved.
+                Log::error('Netcash notify: could not activate sale', [
+                    'payment_id' => $payment->id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
 
         return response('', 200);
     }

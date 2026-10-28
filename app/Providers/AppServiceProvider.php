@@ -19,6 +19,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        \Illuminate\Support\Facades\URL::forceScheme('https');
+        // Live site and ngrok are https. Locally (php artisan serve on http) forcing
+        // https breaks every form and link, so only force it outside local.
+        if (! $this->app->environment('local')) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
     }
 }
