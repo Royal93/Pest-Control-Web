@@ -11,12 +11,12 @@
 <body class="font-body text-ink bg-white">
 
     <div id="siteTopbar" class="border-b-2 border-primary sticky top-0 bg-white/95 z-50 transition-shadow duration-300">
-        <div class="max-w-6xl mx-auto px-7 py-5 flex items-center justify-between">
-            <a href="{{ route('home') }}" class="flex items-center gap-3">
-                <img src="{{ asset('images/logo.png') }}" alt="SP Pest Control" class="w-16 h-16 rounded-full object-cover">
-                <span class="font-display text-xl leading-none hidden sm:inline">SP <span class="text-primary">Pest Control</span></span>
+        <div class="max-w-7xl mx-auto px-4 sm:px-7 py-3 lg:py-5 flex items-center justify-between gap-3">
+            <a href="{{ route('home') }}" class="flex items-center gap-3 shrink-0">
+                <img src="{{ asset('images/logo.png') }}" alt="SP Pest Control" class="w-12 h-12 lg:w-16 lg:h-16 rounded-full object-cover">
+                <span class="font-display text-lg lg:text-xl leading-none hidden sm:inline lg:hidden xl:inline">SP <span class="text-primary">Pest Control</span></span>
             </a>
-            <nav class="hidden md:flex gap-7 text-sm items-center">
+            <nav class="hidden lg:flex gap-5 text-sm items-center">
                 <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
                     <button type="button" class="nav-link flex items-center gap-1 {{ request()->routeIs('services.residential') || request()->routeIs('services.pest') ? 'is-active' : '' }}">
                         Residential
@@ -92,10 +92,58 @@
                     <a href="{{ route('login') }}" class="nav-link {{ request()->routeIs('login') ? 'is-active' : '' }}">Log In</a>
                 @endauth
             </nav>
-            <a href="{{ route('contact') }}" class="bg-primary text-white text-sm uppercase tracking-wide font-semibold px-5 py-3">
-                Request Inspection
-            </a>
+            <div class="flex items-center gap-2">
+                <a href="{{ route('contact') }}" class="bg-primary text-white text-xs sm:text-sm uppercase tracking-wide font-semibold px-3 py-2 sm:px-5 sm:py-3 whitespace-nowrap">
+                    Request Inspection
+                </a>
+                {{-- Mobile / tablet menu button --}}
+                <button type="button" class="menu-btn lg:hidden w-11 h-11 flex items-center justify-center border-2 border-primary text-primary"
+                        data-menu-toggle="mobileNav" aria-controls="mobileNav" aria-expanded="false" aria-label="Open menu">
+                    <svg class="icon-open w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+                    <svg class="icon-close w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
+                </button>
+            </div>
         </div>
+
+        {{-- Mobile / tablet menu --}}
+        <nav id="mobileNav" class="mobile-menu lg:hidden border-t border-primary/30 bg-white" aria-label="Main menu">
+            <div class="max-w-6xl mx-auto px-4 sm:px-7 py-3 flex flex-col text-base">
+                <details class="mobile-group border-b border-gray-200" {{ request()->routeIs('services.residential') || request()->routeIs('services.pest') ? 'open' : '' }}>
+                    <summary class="flex items-center justify-between py-3 font-semibold cursor-pointer">Residential <span class="chev text-primary">&#9662;</span></summary>
+                    <div class="flex flex-col pb-3 pl-3">
+                        <a href="{{ route('services.pest', 'cockroaches') }}" class="py-2">Cockroaches</a>
+                        <a href="{{ route('services.pest', 'ants') }}" class="py-2">Ants</a>
+                        <a href="{{ route('services.pest', 'rodents') }}" class="py-2">Rodents</a>
+                        <a href="{{ route('services.pest', 'termites') }}" class="py-2">Termites</a>
+                        <a href="{{ route('services.pest', 'bed-bugs') }}" class="py-2">Bed Bugs</a>
+                        <a href="{{ route('services.residential') }}" class="py-2 font-semibold text-primary">All Residential Pests</a>
+                    </div>
+                </details>
+                <details class="mobile-group border-b border-gray-200" {{ request()->routeIs('services.commercial') ? 'open' : '' }}>
+                    <summary class="flex items-center justify-between py-3 font-semibold cursor-pointer">Commercial <span class="chev text-primary">&#9662;</span></summary>
+                    <div class="flex flex-col pb-3 pl-3">
+                        <a href="{{ route('services.commercial') }}#multi-family-housing" class="py-2">Multi-Family Housing</a>
+                        <a href="{{ route('services.commercial') }}#retail-businesses" class="py-2">Retail Businesses</a>
+                        <a href="{{ route('services.commercial') }}#restaurants-food-services" class="py-2">Restaurants &amp; Food Services</a>
+                        <a href="{{ route('services.commercial') }}#schools-educational-facilities" class="py-2">Schools &amp; Educational Facilities</a>
+                        <a href="{{ route('services.commercial') }}" class="py-2 font-semibold text-primary">All Commercial Services</a>
+                    </div>
+                </details>
+                <a href="{{ route('plans.index') }}" class="py-3 font-semibold border-b border-gray-200 {{ request()->routeIs('plans.index') ? 'text-primary' : '' }}">Protection Plans</a>
+                <a href="{{ route('about') }}" class="py-3 font-semibold border-b border-gray-200 {{ request()->routeIs('about') ? 'text-primary' : '' }}">About</a>
+                <a href="{{ route('contact') }}" class="py-3 font-semibold border-b border-gray-200 {{ request()->routeIs('contact') ? 'text-primary' : '' }}">Contact</a>
+                @auth
+                    <a href="{{ route('portal.index') }}" class="py-3 font-semibold border-b border-gray-200 {{ request()->routeIs('portal.index') ? 'text-primary' : '' }}">My Account</a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="w-full text-left py-3 font-semibold">Log Out</button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="py-3 font-semibold {{ request()->routeIs('login') ? 'text-primary' : '' }}">Log In</a>
+                @endauth
+                <a href="tel:+27113941191" class="mt-3 mb-1 text-center border-2 border-primary text-primary uppercase text-sm font-semibold py-3">Call 011 394 1191</a>
+            </div>
+        </nav>
     </div>
 
     <main>

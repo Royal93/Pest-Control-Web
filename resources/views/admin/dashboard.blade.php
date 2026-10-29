@@ -5,7 +5,7 @@
 @section('content')
 <h1 class="font-display uppercase text-2xl mb-6">Dashboard</h1>
 
-<div class="grid md:grid-cols-4 gap-4 mb-6">
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
     <div class="border-2 border-line rounded-xl p-5 bg-white">
         <div class="text-xs uppercase text-inkFaint mb-1">Active Plans</div>
         <div class="text-2xl font-display">{{ $stats['plans_count'] }}</div>
@@ -26,7 +26,7 @@
     </div>
 </div>
 
-<div class="grid md:grid-cols-3 gap-4 mb-10">
+<div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-10">
     <a href="{{ route('admin.marketing.index') }}" class="border-2 border-line rounded-xl p-5 bg-white hover:bg-bgAlt">
         <div class="text-xs uppercase text-inkFaint mb-1">Sales Team</div>
         <div class="text-2xl font-display">{{ $stats['sales_team_count'] ?? '—' }}</div>
@@ -35,7 +35,7 @@
         <div class="text-xs uppercase text-inkFaint mb-1">Leads This Month</div>
         <div class="text-2xl font-display">{{ $stats['leads_this_month'] ?? '—' }}</div>
     </a>
-    <div class="border-2 border-line rounded-xl p-5 bg-white">
+    <div class="col-span-2 lg:col-span-1 border-2 border-line rounded-xl p-5 bg-white">
         <div class="text-xs uppercase text-inkFaint mb-1">Assigned Leads</div>
         <div class="text-2xl font-display">{{ $stats['assigned_leads'] ?? '—' }}</div>
         @if (($stats['unassigned_leads'] ?? 0) > 0)

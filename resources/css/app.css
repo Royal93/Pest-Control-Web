@@ -334,3 +334,53 @@ div.rounded-full.border-primary {
     transform: none !important;
   }
 }
+
+/* ── Mobile navigation ─────────────────────────────────────────────
+   Public site: a drop-down menu under the top bar (below the lg breakpoint).
+   Admin and SP SALES: the sidebar becomes a slide-in drawer below md.
+   Opened and closed by the [data-menu-toggle] handler in resources/js/app.js. */
+.mobile-menu { display: none; max-height: calc(100vh - 76px); overflow-y: auto; }
+.mobile-menu.is-open { display: block; }
+.mobile-group > summary { list-style: none; }
+.mobile-group > summary::-webkit-details-marker { display: none; }
+.mobile-group .chev { transition: transform 0.2s ease; }
+.mobile-group[open] .chev { transform: rotate(180deg); }
+
+.menu-btn .icon-close { display: none; }
+.menu-btn[aria-expanded="true"] .icon-open { display: none; }
+.menu-btn[aria-expanded="true"] .icon-close { display: block; }
+
+.drawer { transform: translateX(-100%); transition: transform 0.25s ease; }
+.drawer.is-open { transform: translateX(0); }
+.drawer-overlay { display: none; }
+.drawer-overlay.is-open { display: block; }
+@media (min-width: 768px) {
+  .drawer { transform: none; }
+  .drawer-overlay, .drawer-overlay.is-open { display: none; }
+}
+
+body.menu-open { overflow: hidden; }
+
+/* Admin / SP SALES on phones: wide tables scroll sideways inside their card
+   instead of pushing the whole page wider than the screen. */
+@media (max-width: 767px) {
+  .app-shell main table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .app-shell main table th, .app-shell main table td { white-space: nowrap; }
+}
+/* Grid and flex children may shrink below their content, so a wide table
+   scrolls inside its card rather than stretching the column. */
+.app-shell main .grid > *, .app-shell main .flex-col > * { min-width: 0; }
+.app-shell main dd { overflow-wrap: anywhere; }
+
+/* Phones: pest badges two per row instead of one huge circle per row. */
+@media (max-width: 639px) {
+  .pest-badge-row { gap: 28px 12px; }
+  .pest-badge-wrap { width: calc(50% - 6px); gap: 10px; }
+  .pest-badge { width: 132px; height: 132px; padding: 12px; }
+  .pest-badge.ring-primary, .pest-badge.ring-secondary, .pest-badge.ring-accent { border-width: 6px; }
+  .pest-badge-lg { width: 180px; height: 180px; padding: 18px; }
+  .pest-badge-label { font-size: 0.8rem; text-align: center; }
+}
+
+/* Desktop nav items never break onto two lines. */
+.nav-link { white-space: nowrap; }

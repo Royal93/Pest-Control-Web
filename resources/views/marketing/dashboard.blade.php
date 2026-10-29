@@ -5,7 +5,7 @@
 @section('content')
 <h1 class="font-display uppercase text-2xl mb-6">My Dashboard</h1>
 
-<div class="grid md:grid-cols-4 gap-4 mb-10">
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-10">
     <div class="border-2 border-line rounded-xl p-5 bg-white">
         <div class="text-xs uppercase text-inkFaint mb-1">Total Leads Assigned</div>
         <div class="text-2xl font-display">{{ $stats['total'] }}</div>
