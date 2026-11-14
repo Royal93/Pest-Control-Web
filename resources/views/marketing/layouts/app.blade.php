@@ -11,11 +11,14 @@
     {{-- Phones: top bar with a menu button; the sidebar slides in as a drawer --}}
     <header class="md:hidden sticky top-0 z-30 bg-secondary text-white flex items-center justify-between px-4 py-3">
         <span class="font-display uppercase text-lg tracking-wide">SP Sales</span>
+        <div class="flex items-center gap-2">
+        @include('partials.notification-bell', ['bellUser' => auth()->user(), 'feedUrl' => route('marketing.notifications.feed'), 'readAllUrl' => route('marketing.notifications.readAll'), 'tone' => 'dark'])
         <button type="button" class="menu-btn w-11 h-11 flex items-center justify-center rounded-lg border border-white/30"
                 data-menu-toggle="salesNav" aria-controls="salesNav" aria-expanded="false" aria-label="Open menu">
             <svg class="icon-open w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
             <svg class="icon-close w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
         </button>
+        </div>
     </header>
     <div class="drawer-overlay fixed inset-0 z-30 bg-black/40 md:hidden" data-menu-close="salesNav"></div>
 
@@ -25,6 +28,11 @@
         <nav class="flex flex-col gap-1 text-sm">
             <a href="{{ route('marketing.dashboard') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('marketing.dashboard') ? 'bg-white/10 font-semibold' : '' }}">Dashboard</a>
             <a href="{{ route('marketing.leads.index') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('marketing.leads.*') ? 'bg-white/10 font-semibold' : '' }}">My Leads</a>
+            @php($openLeadsNav = \App\Models\Lead::openForClaims()->count())
+            <a href="{{ route('marketing.open.index') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 flex items-center justify-between {{ request()->routeIs('marketing.open.*') ? 'bg-white/10 font-semibold' : '' }}">
+                <span>Open Leads</span>
+                @if ($openLeadsNav > 0)<span class="text-xs font-bold bg-primary text-white rounded-full px-2 py-0.5">{{ $openLeadsNav }}</span>@endif
+            </a>
             <a href="{{ route('marketing.sales.index') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('marketing.sales.*') ? 'bg-white/10 font-semibold' : '' }}">My Sales</a>
         </nav>
         <div class="mt-10 text-xs text-white/60">{{ auth()->user()->name }} {{ auth()->user()->surname }}</div>
@@ -35,6 +43,10 @@
     </aside>
 
     <main class="flex-1 min-w-0 p-4 sm:p-6 md:p-8">
+        <div class="hidden md:flex justify-end mb-4 -mt-2">
+            @include('partials.notification-bell', ['bellUser' => auth()->user(), 'feedUrl' => route('marketing.notifications.feed'), 'readAllUrl' => route('marketing.notifications.readAll'), 'tone' => 'light'])
+        </div>
+
         @if (session('status'))
             <div class="mb-6 border-2 border-accent bg-accent/10 text-ink px-4 py-3 rounded-lg text-sm">
                 {{ session('status') }}

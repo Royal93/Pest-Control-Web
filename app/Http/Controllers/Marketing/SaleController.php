@@ -40,6 +40,11 @@ class SaleController extends Controller
 
         $this->authorizeOwnLead($lead);
 
+        if ($lead->hasPaidSale()) {
+            return redirect()->route('marketing.leads.edit', $lead)
+                ->with('status', $lead->name.' already has a paid sale, so there is nothing more to capture here.');
+        }
+
         return view('marketing.sales.create', [
             'lead' => $lead,
             'prefill' => $this->agreements->prefillFromLead($lead),
@@ -52,6 +57,11 @@ class SaleController extends Controller
         $data = $request->validated();
         $lead = Lead::findOrFail($data['lead_id']);
         $this->authorizeOwnLead($lead);
+
+        if ($lead->hasPaidSale()) {
+            return redirect()->route('marketing.leads.edit', $lead)
+                ->with('status', $lead->name.' already has a paid sale, so there is nothing more to capture here.');
+        }
 
         $sale = $this->agreements->create($data, $request->user(), null, $lead);
 

@@ -27,6 +27,9 @@ class DashboardController extends Controller
 
         $recentLeads = (clone $base)->latest('assigned_at')->latest()->limit(8)->get();
 
-        return view('marketing.dashboard', compact('stats', 'recentLeads'));
+        // Unassigned leads any rep can claim on Open Leads.
+        $openLeadsCount = Lead::openForClaims()->count();
+
+        return view('marketing.dashboard', compact('stats', 'recentLeads', 'openLeadsCount'));
     }
 }

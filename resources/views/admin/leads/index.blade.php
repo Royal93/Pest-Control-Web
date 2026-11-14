@@ -95,6 +95,11 @@
                                 @endforeach
                             </select>
                         </form>
+                        @if (! $lead->assigned_to && $lead->pending_claims_count > 0)
+                            <a href="{{ route('admin.leads.show', $lead) }}" class="inline-block mt-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">
+                                {{ $lead->pending_claims_count }} {{ $lead->pending_claims_count === 1 ? 'claim' : 'claims' }} waiting
+                            </a>
+                        @endif
                     </td>
                     <td class="px-5 py-3">
                         <form method="POST" action="{{ route('admin.leads.updateStatus', $lead) }}" class="flex items-center gap-2">

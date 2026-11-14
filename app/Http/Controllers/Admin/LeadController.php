@@ -9,6 +9,8 @@ use App\Models\Pest;
 use App\Models\Plan;
 use App\Models\User;
 use App\Rules\SouthAfricanPhone;
+use App\Services\LeadClaimService;
+use App\Services\Notifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -30,7 +32,8 @@ class LeadController extends Controller
             $tab = 'in_progress';
         }
 
-        $base = Lead::with(['assignedTo', 'capturedBy']);
+        $base = Lead::with(['assignedTo', 'capturedBy'])
+            ->withCount(['claims as pending_claims_count' => fn ($q) => $q->where('status', 'pending')]);
 
         $counts = [
             'in_progress' => (clone $base)->whereIn('status', Lead::IN_PROGRESS_STATUSES)->count(),
@@ -134,9 +137,13 @@ class LeadController extends Controller
 
         $lead->load('assignedTo');
 
+        if ($lead->assignedTo) {
+            Notifier::leadAssigned($lead, $lead->assignedTo);
+        }
+
         $message = $lead->assignedTo
             ? 'Lead saved and assigned to '.$lead->assignedToName().'. It now shows on their SP SALES dashboard.'
-            : 'Lead saved. It is not assigned to a sales rep yet.';
+            : 'Lead saved. It is not assigned yet, so every sales rep can see it on Open Leads and claim it.';
 
         return $request->boolean('add_another')
             ? redirect()->route('admin.leads.create', ['rep' => $lead->assigned_to])->with('status', $message)
@@ -145,7 +152,10 @@ class LeadController extends Controller
 
     public function show(Lead $lead)
     {
-        $lead->load(['assignedTo', 'capturedBy', 'capturedByAdmin', 'documents.uploadedBy', 'sales.salesRep']);
+        $lead->load([
+            'assignedTo', 'capturedBy', 'capturedByAdmin', 'documents.uploadedBy', 'sales.salesRep',
+            'claims' => fn ($q) => $q->with(['rep', 'decidedBy'])->orderByRaw("CASE WHEN status = 'pending' THEN 0 ELSE 1 END")->oldest(),
+        ]);
 
         $hasAccount = $lead->email
             ? User::customers()->whereRaw('LOWER(email) = ?', [strtolower($lead->email)])->exists()
@@ -159,8 +169,13 @@ class LeadController extends Controller
         ]);
     }
 
-    /** Assign, reassign or unassign a lead. The rep sees it on SP SALES immediately. */
-    public function assign(Request $request, Lead $lead)
+    /**
+     * Assign, reassign or unassign a lead. The rep sees it on SP SALES immediately
+     * and gets a notification. Any waiting claims on the lead are settled: the
+     * chosen rep's claim (if they made one) is approved and the rest declined.
+     * Unassigning puts the lead back on Open Leads for reps to claim.
+     */
+    public function assign(Request $request, Lead $lead, LeadClaimService $claims)
     {
         $validated = $request->validate([
             'assigned_to' => ['nullable', 'integer', Rule::exists('users', 'id')->where('role', 'marketing')],
@@ -173,13 +188,25 @@ class LeadController extends Controller
                 'assigned_to' => $repId,
                 'assigned_at' => $repId ? now() : null,
             ]);
+
+            $lead->load('assignedTo');
+
+            if ($lead->assignedTo) {
+                $claimApproved = $claims->settleOnDirectAssign($lead, $lead->assignedTo->id, Auth::guard('admin')->user());
+
+                if ($claimApproved) {
+                    Notifier::claimApproved($lead->claims()->where('user_id', $lead->assignedTo->id)->first());
+                } else {
+                    Notifier::leadAssigned($lead, $lead->assignedTo);
+                }
+            }
         }
 
         $lead->load('assignedTo');
 
         return back()->with('status', $lead->assignedTo
             ? $lead->name.' is assigned to '.$lead->assignedToName().'.'
-            : $lead->name.' is no longer assigned to a sales rep.');
+            : $lead->name.' is no longer assigned to a sales rep.'.($lead->isOpenForClaims() ? ' It is back on Open Leads for reps to claim.' : ''));
     }
 
     public function updateStatus(Request $request, Lead $lead)

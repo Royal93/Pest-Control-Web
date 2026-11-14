@@ -44,7 +44,7 @@
             <h2 class="font-display uppercase text-sm">Capture a Sale</h2>
             <p class="text-xs text-inkFaint mt-1">Customer agreed? Complete the sale questionnaire and their service agreement is emailed to them to accept and pay online.</p>
         </div>
-        @unless ($lead->status === 'converted')
+        @unless ($lead->hasPaidSale())
             <a href="{{ route('marketing.sales.create', ['lead' => $lead->id]) }}"
                class="border-2 border-primary bg-primary text-white uppercase text-sm font-semibold px-5 py-2 rounded-lg whitespace-nowrap">
                 Capture a Sale

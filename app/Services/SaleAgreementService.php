@@ -198,6 +198,8 @@ class SaleAgreementService
 
         $this->deliver($sale->email, new SaleAgreementMail($sale, 'accepted', false), $sale, 'accepted agreement to customer');
         $this->sendInternalCopies($sale, new SaleAgreementMail($sale, 'accepted', true));
+
+        Notifier::agreementAccepted($sale);
     }
 
     /** Netcash Pay Now fields for the first payment, which also sets up the recurring debit. */
@@ -276,6 +278,8 @@ class SaleAgreementService
         }
 
         $this->sendInternalCopies($sale, new SalePaidNotification($sale, $payment, $customer));
+
+        Notifier::salePaid($sale);
     }
 
     /** Signed link to set a password for a newly created customer account. Valid 7 days, dies once used. */

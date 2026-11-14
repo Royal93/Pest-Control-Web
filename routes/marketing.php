@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Marketing\DashboardController;
 use App\Http\Controllers\Marketing\LeadController;
+use App\Http\Controllers\Marketing\OpenLeadController;
 use App\Http\Controllers\Marketing\SaleController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +28,16 @@ Route::prefix('sales')->name('marketing.')->middleware(['auth', 'role:marketing'
     Route::post('/leads/{lead}/documents', [LeadController::class, 'storeDocument'])->name('leads.documents.store');
     Route::get('/leads/{lead}/documents/{document}/download', [LeadController::class, 'downloadDocument'])->name('leads.documents.download');
     Route::delete('/leads/{lead}/documents/{document}', [LeadController::class, 'destroyDocument'])->name('leads.documents.destroy');
+
+    // Open Leads: unassigned leads any rep can claim. Admin approves one claim.
+    Route::get('/open-leads', [OpenLeadController::class, 'index'])->name('open.index');
+    Route::post('/open-leads/{lead}/claim', [OpenLeadController::class, 'claim'])->name('open.claim');
+    Route::delete('/open-leads/{lead}/claim', [OpenLeadController::class, 'withdraw'])->name('open.withdraw');
+
+    // Notification bell
+    Route::get('/notifications/feed', [NotificationController::class, 'feed'])->name('notifications.feed');
+    Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.readAll');
+    Route::get('/notifications/{id}', [NotificationController::class, 'open'])->name('notifications.open');
 
     Route::get('/my-sales', [SaleController::class, 'index'])->name('sales.index');
     Route::get('/my-sales/create', [SaleController::class, 'create'])->name('sales.create');

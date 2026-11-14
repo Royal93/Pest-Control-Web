@@ -5,10 +5,12 @@ use App\Http\Controllers\Admin\AdminManagementController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InvoiceController;
+use App\Http\Controllers\Admin\LeadClaimController;
 use App\Http\Controllers\Admin\LeadController;
 use App\Http\Controllers\Admin\MarketingController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\SaleController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,6 +64,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::patch('/leads/{lead}/assign', [LeadController::class, 'assign'])->name('leads.assign');
         Route::patch('/leads/{lead}/status', [LeadController::class, 'updateStatus'])->name('leads.updateStatus');
         Route::get('/leads/{lead}/documents/{document}/download', [LeadController::class, 'downloadDocument'])->name('leads.documents.download');
+
+        // Lead claims: reps claim unassigned leads on SP SALES, admin approves one.
+        Route::get('/lead-claims', [LeadClaimController::class, 'index'])->name('claims.index');
+        Route::post('/lead-claims/{claim}/approve', [LeadClaimController::class, 'approve'])->name('claims.approve');
+        Route::post('/lead-claims/{claim}/decline', [LeadClaimController::class, 'decline'])->name('claims.decline');
+
+        // Notification bell
+        Route::get('/notifications/feed', [NotificationController::class, 'feed'])->name('notifications.feed');
+        Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.readAll');
+        Route::get('/notifications/{id}', [NotificationController::class, 'open'])->name('notifications.open');
 
         // Sales: Capture a Sale -> service agreement -> acceptance -> payment.
         Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');

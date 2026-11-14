@@ -15,11 +15,18 @@ use Illuminate\Support\Facades\Storage;
  */
 class LeadController extends Controller
 {
-    /** The leads assigned to this rep. Reps only ever see their own. */
+    /**
+     * The leads assigned to this rep. Reps only ever see their own. By default
+     * only leads still being worked show (New, Contacted, Quoted); Converted and
+     * Not interested are one choice away in the status filter, or "all".
+     */
     public function index(Request $request)
     {
+        $status = (string) $request->input('status', 'active');
+
         $leads = Lead::where('assigned_to', Auth::id())
-            ->when($request->filled('status'), fn ($q) => $q->where('status', $request->input('status')))
+            ->when($status === 'active', fn ($q) => $q->whereIn('status', Lead::IN_PROGRESS_STATUSES))
+            ->when(in_array($status, Lead::STATUSES, true), fn ($q) => $q->where('status', $status))
             ->when($request->filled('search'), function ($q) use ($request) {
                 $term = '%'.$request->input('search').'%';
                 $q->where(fn ($w) => $w->where('name', 'like', $term)->orWhere('phone', 'like', $term));
@@ -32,6 +39,7 @@ class LeadController extends Controller
         return view('marketing.leads.index', [
             'leads' => $leads,
             'statuses' => Lead::STATUSES,
+            'status' => $status,
         ]);
     }
 

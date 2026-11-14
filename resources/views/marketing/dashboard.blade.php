@@ -5,6 +5,13 @@
 @section('content')
 <h1 class="font-display uppercase text-2xl mb-6">My Dashboard</h1>
 
+@if ($openLeadsCount > 0)
+    <div class="mb-6 border-2 border-primary bg-primary/10 rounded-lg px-4 py-3 text-sm flex flex-wrap items-center justify-between gap-2">
+        <span><strong>{{ $openLeadsCount }}</strong> unassigned {{ $openLeadsCount === 1 ? 'lead is' : 'leads are' }} open to claim.</span>
+        <a href="{{ route('marketing.open.index') }}" class="text-primary font-semibold">View Open Leads</a>
+    </div>
+@endif
+
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-10">
     <div class="border-2 border-line rounded-xl p-5 bg-white">
         <div class="text-xs uppercase text-inkFaint mb-1">Total Leads Assigned</div>

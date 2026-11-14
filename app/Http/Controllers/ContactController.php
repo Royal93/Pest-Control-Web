@@ -52,6 +52,8 @@ class ContactController extends Controller
             ]);
         }
 
+        \App\Services\Notifier::newWebsiteLead($lead);
+
         return back()->with('success', 'Request received. A technician will follow up shortly to confirm your inspection.');
     }
 }

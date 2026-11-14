@@ -58,6 +58,12 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\Lead::class, 'assigned_to');
     }
 
+    /** Claims this rep has made on unassigned leads. */
+    public function leadClaims()
+    {
+        return $this->hasMany(\App\Models\LeadClaim::class, 'user_id');
+    }
+
     /** Sales this rep has captured (service agreements sent to customers). */
     public function repSales()
     {

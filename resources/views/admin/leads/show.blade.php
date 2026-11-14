@@ -56,7 +56,7 @@
         <div class="border-2 border-line rounded-xl bg-white p-6">
             <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
                 <h2 class="font-display uppercase text-sm">Sales &amp; Agreements</h2>
-                @unless ($lead->status === 'converted')
+                @unless ($lead->hasPaidSale())
                     <a href="{{ route('admin.sales.create', ['lead' => $lead->id]) }}"
                        class="border-2 border-primary bg-primary text-white uppercase text-xs font-semibold px-4 py-2 rounded-lg">
                         Capture a Sale
@@ -119,6 +119,48 @@
     </div>
 
     <div class="flex flex-col gap-6">
+        @if ($lead->claims->isNotEmpty() || $lead->isOpenForClaims())
+            <div class="border-2 {{ $lead->claims->contains(fn ($c) => $c->isPending()) ? 'border-amber-400' : 'border-line' }} rounded-xl bg-white p-6">
+                <h2 class="font-display uppercase text-sm mb-1">Claims From Sales Reps</h2>
+                @if ($lead->isOpenForClaims())
+                    <p class="text-xs text-inkFaint mb-3">This lead is unassigned, so every sales rep can see it on Open Leads (without the contact details) and claim it. Approving a claim gives the lead to that rep and declines the others.</p>
+                @endif
+
+                @forelse ($lead->claims as $claim)
+                    <div class="border-t border-line py-3 text-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <span class="font-semibold">{{ $claim->rep?->fullName() ?? 'Removed rep' }}</span>
+                            <span class="text-xs font-semibold px-2 py-1 rounded-full {{ $claim->statusBadgeClasses() }}">{{ $claim->statusLabel() }}</span>
+                        </div>
+                        <div class="text-xs text-inkFaint mt-1">
+                            Claimed {{ $claim->created_at->format('d M Y, H:i') }}
+                            @if ($claim->decided_at && ! $claim->isPending())
+                                &middot; {{ $claim->status === 'withdrawn' ? 'withdrawn' : 'decided' }} {{ $claim->decided_at->format('d M Y') }}{{ $claim->decidedBy ? ' by '.$claim->decidedBy->name : '' }}
+                            @endif
+                        </div>
+                        @if ($claim->note)
+                            <p class="mt-2 text-sm bg-bgAlt rounded-lg px-3 py-2">{{ $claim->note }}</p>
+                        @endif
+                        @if ($claim->isPending())
+                            <div class="flex gap-2 mt-3">
+                                <form method="POST" action="{{ route('admin.claims.approve', $claim) }}"
+                                      onsubmit="return confirm('Give {{ addslashes($lead->name) }} to {{ addslashes($claim->rep?->fullName()) }}? Other claims on this lead will be declined.');">
+                                    @csrf
+                                    <button type="submit" class="border-2 border-primary bg-primary text-white uppercase text-xs font-semibold px-4 py-2 rounded-lg">Approve</button>
+                                </form>
+                                <form method="POST" action="{{ route('admin.claims.decline', $claim) }}">
+                                    @csrf
+                                    <button type="submit" class="border-2 border-line uppercase text-xs font-semibold px-4 py-2 rounded-lg">Decline</button>
+                                </form>
+                            </div>
+                        @endif
+                    </div>
+                @empty
+                    <p class="text-sm text-inkFaint">No sales rep has claimed this lead yet.</p>
+                @endforelse
+            </div>
+        @endif
+
         <div class="border-2 border-line rounded-xl bg-white p-6">
             <h2 class="font-display uppercase text-sm mb-1">Assigned Sales Rep</h2>
             <p class="text-sm mb-3 {{ $lead->assignedTo ? '' : 'text-primary font-semibold' }}">

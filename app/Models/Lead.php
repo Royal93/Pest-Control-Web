@@ -64,6 +64,38 @@ class Lead extends Model
         return $this->hasMany(Sale::class);
     }
 
+    /** Reps asking to be given this lead while it is unassigned. */
+    public function claims()
+    {
+        return $this->hasMany(LeadClaim::class);
+    }
+
+    /**
+     * Unassigned leads that are still being worked: these show on Open Leads
+     * on SP SALES for any rep to claim.
+     */
+    public function scopeOpenForClaims($query)
+    {
+        return $query->whereNull('assigned_to')->whereIn('status', self::IN_PROGRESS_STATUSES);
+    }
+
+    public function isOpenForClaims(): bool
+    {
+        return $this->assigned_to === null && in_array($this->status, self::IN_PROGRESS_STATUSES, true);
+    }
+
+    /**
+     * Whether a customer has actually paid on a sale for this lead. Capture a Sale
+     * stays available until this is true, whatever the status label says (a lead
+     * marked Converted by hand, with no paid sale, can still be sold to).
+     */
+    public function hasPaidSale(): bool
+    {
+        return $this->relationLoaded('sales')
+            ? $this->sales->contains(fn ($sale) => $sale->status === 'paid')
+            : $this->sales()->where('status', 'paid')->exists();
+    }
+
     public function sourceLabel(): string
     {
         return self::SOURCES[$this->source] ?? ucfirst(str_replace('_', ' ', (string) $this->source));

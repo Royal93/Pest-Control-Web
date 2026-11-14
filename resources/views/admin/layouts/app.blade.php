@@ -11,11 +11,14 @@
     {{-- Phones: top bar with a menu button; the sidebar slides in as a drawer --}}
     <header class="md:hidden sticky top-0 z-30 bg-secondary text-white flex items-center justify-between px-4 py-3">
         <span class="font-display uppercase text-lg tracking-wide">SP Admin</span>
+        <div class="flex items-center gap-2">
+        @include('partials.notification-bell', ['bellUser' => auth('admin')->user(), 'feedUrl' => route('admin.notifications.feed'), 'readAllUrl' => route('admin.notifications.readAll'), 'tone' => 'dark'])
         <button type="button" class="menu-btn w-11 h-11 flex items-center justify-center rounded-lg border border-white/30"
                 data-menu-toggle="adminNav" aria-controls="adminNav" aria-expanded="false" aria-label="Open menu">
             <svg class="icon-open w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
             <svg class="icon-close w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
         </button>
+        </div>
     </header>
     <div class="drawer-overlay fixed inset-0 z-30 bg-black/40 md:hidden" data-menu-close="adminNav"></div>
 
@@ -30,6 +33,11 @@
             <a href="{{ route('admin.invoices.index') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('admin.invoices.*') ? 'bg-white/10 font-semibold' : '' }}">Invoices</a>
             <a href="{{ route('admin.marketing.index') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('admin.marketing.*') ? 'bg-white/10 font-semibold' : '' }}">Sales Team</a>
             <a href="{{ route('admin.leads.index') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('admin.leads.index') || request()->routeIs('admin.leads.show') ? 'bg-white/10 font-semibold' : '' }}">Leads</a>
+            @php($pendingClaims = \App\Models\LeadClaim::pending()->count())
+            <a href="{{ route('admin.claims.index') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 flex items-center justify-between {{ request()->routeIs('admin.claims.*') ? 'bg-white/10 font-semibold' : '' }}">
+                <span>Lead Claims</span>
+                @if ($pendingClaims > 0)<span class="text-xs font-bold bg-primary text-white rounded-full px-2 py-0.5">{{ $pendingClaims }}</span>@endif
+            </a>
             <a href="{{ route('admin.leads.create') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('admin.leads.create') ? 'bg-white/10 font-semibold' : '' }}">Capture Lead</a>
             <a href="{{ route('admin.sales.index') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('admin.sales.*') ? 'bg-white/10 font-semibold' : '' }}">Sales &amp; Agreements</a>
         </nav>
@@ -40,6 +48,10 @@
     </aside>
 
     <main class="flex-1 min-w-0 p-4 sm:p-6 md:p-8">
+        <div class="hidden md:flex justify-end mb-4 -mt-2">
+            @include('partials.notification-bell', ['bellUser' => auth('admin')->user(), 'feedUrl' => route('admin.notifications.feed'), 'readAllUrl' => route('admin.notifications.readAll'), 'tone' => 'light'])
+        </div>
+
         @if (session('status'))
             <div class="mb-6 border-2 border-accent bg-accent/10 text-ink px-4 py-3 rounded-lg text-sm">
                 {{ session('status') }}

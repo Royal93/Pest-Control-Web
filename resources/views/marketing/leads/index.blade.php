@@ -9,10 +9,11 @@
     <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name or phone…"
            class="border-2 border-line rounded-lg px-3 py-2 text-sm w-full max-w-xs">
     <select name="status" class="border-2 border-line rounded-lg px-3 py-2 text-sm bg-white" onchange="this.form.submit()">
-        <option value="">All statuses</option>
-        @foreach ($statuses as $status)
-            <option value="{{ $status }}" @selected(request('status') === $status)>{{ ucfirst(str_replace('_', ' ', $status)) }}</option>
+        <option value="active" @selected($status === 'active')>Still working (New, Contacted, Quoted)</option>
+        @foreach ($statuses as $option)
+            <option value="{{ $option }}" @selected($status === $option)>{{ ucfirst(str_replace('_', ' ', $option)) }} only</option>
         @endforeach
+        <option value="all" @selected($status === 'all')>All statuses</option>
     </select>
     <button type="submit" class="border-2 border-line rounded-lg px-4 py-2 text-sm font-semibold">Filter</button>
 </form>
@@ -48,7 +49,13 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="7" class="px-5 py-6 text-center text-inkFaint">No leads assigned to you yet.</td></tr>
+                <tr><td colspan="7" class="px-5 py-6 text-center text-inkFaint">
+                    @if ($status === 'active')
+                        No leads to work right now. Finished leads are under the status filter, and you can claim new ones on <a href="{{ route('marketing.open.index') }}" class="text-primary font-semibold">Open Leads</a>.
+                    @else
+                        No leads here.
+                    @endif
+                </td></tr>
             @endforelse
         </tbody>
     </table>
