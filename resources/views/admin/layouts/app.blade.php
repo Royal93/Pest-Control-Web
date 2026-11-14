@@ -29,6 +29,7 @@
             <a href="{{ route('admin.admins.index') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('admin.admins.*') ? 'bg-white/10 font-semibold' : '' }}">Admins</a>
             <a href="{{ route('admin.dashboard') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('admin.dashboard') ? 'bg-white/10 font-semibold' : '' }}">Dashboard</a>
             <a href="{{ route('admin.plans.index') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('admin.plans.*') ? 'bg-white/10 font-semibold' : '' }}">Plans &amp; Pricing</a>
+            <a href="{{ route('admin.slides.index') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('admin.slides.*') ? 'bg-white/10 font-semibold' : '' }}">Homepage Slides</a>
             <a href="{{ route('admin.customers.index') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('admin.customers.*') ? 'bg-white/10 font-semibold' : '' }}">Customers</a>
             <a href="{{ route('admin.invoices.index') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('admin.invoices.*') ? 'bg-white/10 font-semibold' : '' }}">Invoices</a>
             <a href="{{ route('admin.marketing.index') }}" class="px-3 py-2 rounded-lg hover:bg-white/10 {{ request()->routeIs('admin.marketing.*') ? 'bg-white/10 font-semibold' : '' }}">Sales Team</a>

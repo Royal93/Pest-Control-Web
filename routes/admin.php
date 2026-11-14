@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminManagementController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\HeroSlideController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\LeadClaimController;
 use App\Http\Controllers\Admin\LeadController;
@@ -35,6 +36,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/plans', [PlanController::class, 'index'])->name('plans.index');
         Route::get('/plans/{plan}/edit', [PlanController::class, 'edit'])->name('plans.edit');
         Route::put('/plans/{plan}', [PlanController::class, 'update'])->name('plans.update');
+
+        // Website > Homepage Slides: the wording and photos of the homepage hero carousel.
+        Route::get('/website/slides', [HeroSlideController::class, 'index'])->name('slides.index');
+        Route::get('/website/slides/create', [HeroSlideController::class, 'create'])->name('slides.create');
+        Route::post('/website/slides', [HeroSlideController::class, 'store'])->name('slides.store');
+        Route::get('/website/slides/{slide}/edit', [HeroSlideController::class, 'edit'])->name('slides.edit');
+        Route::put('/website/slides/{slide}', [HeroSlideController::class, 'update'])->name('slides.update');
+        Route::patch('/website/slides/{slide}/toggle', [HeroSlideController::class, 'toggle'])->name('slides.toggle');
+        Route::patch('/website/slides/{slide}/move', [HeroSlideController::class, 'move'])->name('slides.move');
+        Route::delete('/website/slides/{slide}', [HeroSlideController::class, 'destroy'])->name('slides.destroy');
 
         Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
         Route::get('/customers/{customer}', [CustomerController::class, 'show'])->name('customers.show');

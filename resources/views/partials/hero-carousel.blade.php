@@ -8,7 +8,11 @@
     $requestUrl = url('/contact');          // primary button target  (change if your route differs)
     $plansUrl   = url('/plans');            // secondary button target (your Protection Plans page)
 
-    $all = [
+    // Slides come from admin (Website > Homepage Slides). The list below is only
+    // a fallback for before the hero_slides table exists.
+    $fromAdmin = \App\Models\HeroSlide::forHomepage();
+
+    $all = $fromAdmin ?? [
         ['image' => 'images/carousel/slide-1.jpg', 'alt' => 'SP Pest Control technician treating a home',
          'tag' => 'Trusted Across South Africa',
          'before' => 'Pest-free homes,', 'accent' => 'guaranteed', 'after' => '',
@@ -34,7 +38,8 @@
     // so every picture is shown whole, whatever its shape.
     $slides = [];
     foreach ($all as $s) {
-        $path = $root . '/' . $s['image'];
+        if (empty($s['image'])) { continue; }
+        $path = $root . '/' . ltrim($s['image'], '/');
         if (!is_file($path)) { continue; }
         $size = @getimagesize($path);
         $s['ratio'] = ($size && $size[1] > 0) ? max(1.2, min(2.2, round($size[0] / $size[1], 3))) : 1.5;
@@ -43,7 +48,10 @@
 
     // Never render an empty hero: fall back to one slide on the brand panel.
     if (count($slides) === 0) {
-        $slides = [array_merge($all[0], ['image' => null, 'ratio' => 1.5])];
+        $slides = [array_merge($all[0] ?? [
+            'tag' => 'Trusted Across South Africa', 'before' => 'Pest-free homes,', 'accent' => 'guaranteed', 'after' => '',
+            'text' => 'Scheduled treatments that stop infestations at the source, so pests stay gone.', 'alt' => '',
+        ], ['image' => null, 'ratio' => 1.5])];
     }
 @endphp
 
@@ -64,11 +72,11 @@
             @endif
             <div class="spc-hero__scrim"></div>
             <div class="spc-hero__content">
-                <span class="spc-hero__pill">{{ $s['tag'] }}</span>
+                @if (!empty($s['tag']))<span class="spc-hero__pill">{{ $s['tag'] }}</span>@endif
                 <h1 class="spc-hero__title">
-                    {{ $s['before'] }} <em>{{ $s['accent'] }}</em> {{ $s['after'] }}
+                    {{ $s['before'] }} @if (!empty($s['accent']))<em>{{ $s['accent'] }}</em>@endif {{ $s['after'] }}
                 </h1>
-                <p class="spc-hero__text">{{ $s['text'] }}</p>
+                @if (!empty($s['text']))<p class="spc-hero__text">{{ $s['text'] }}</p>@endif
                 <div class="spc-hero__actions">
                     <a href="{{ $requestUrl }}" class="spc-btn spc-btn--solid">Request Inspection</a>
                     <a href="{{ $plansUrl }}" class="spc-btn spc-btn--ghost">View Protection Plans</a>
