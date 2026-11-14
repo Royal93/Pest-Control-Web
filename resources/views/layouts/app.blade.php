@@ -235,7 +235,7 @@
                     <div class="border-2 border-primary/40 bg-white/5 rounded-xl p-5">
                         <svg class="w-5 h-5 text-primary mb-2" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.1 8.1 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5.1-.1.2-.3.4-.4.1-.2.2-.3.2-.5.1-.2 0-.4 0-.5 0-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.2-1 1-1 2.3 0 1.4 1 2.7 1.1 2.9.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.2-.2-.5-.3Z"/></svg>
                         <p class="font-mono text-xs uppercase tracking-widest text-primary mb-2">WhatsApp</p>
-                        <a href="https://wa.me/27676456311" target="_blank" rel="noopener" class="text-white/70 text-sm hover:text-primary">067 645 6311</a>
+                        <a href="https://wa.me/27773725884" target="_blank" rel="noopener" class="text-white/70 text-sm hover:text-primary">077 372 5884</a>
                     </div>
                     <div class="border-2 border-primary/40 bg-white/5 rounded-xl p-5">
                         <svg class="w-5 h-5 text-primary mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
